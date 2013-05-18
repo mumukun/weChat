@@ -5,14 +5,14 @@
 这里已经包含了源码和默认的一个实现。如果你想实现自己的个性话定制，只需把lib加人到你的web的lib目录。
 加入classPath下面增加一个wechat.properties和log4j.properties的配置，在wechat.properties里面的MessageProcessingHandlerImpl是配置自定义的消息处理器的类路径(具体可以查看默认实现的源码)
 web.xml里面配置一个过滤器。
-<filter>
-	<filter-name>WeChatFilter</filter-name>
-	<filter-class>com.gson.WeChatFilter</filter-class>
-</filter>
-<filter-mapping>
-	<filter-name>WeChatFilter</filter-name>
-	<url-pattern>/wechat/*</url-pattern>
-</filter-mapping>
+&lt;filter&gt;
+    &lt;filter-name&gt;WeChatFilter&lt;/filter-name&gt;
+	&lt;filter-class&gt;com.gson.WeChatFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;WeChatFilter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/wechat/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
 demo里面我默认配置是过滤（/wechat/*）类型的所有请求。
 星号表示在公众平台里面配置的Token。
 例如：
