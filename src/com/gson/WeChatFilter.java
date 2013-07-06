@@ -29,11 +29,12 @@ import com.thoughtworks.xstream.XStream;
 
 /**
  * 请求拦截
+ * 
  * @author GodSon
- *
+ * 
  */
 public class WeChatFilter implements Filter {
-	
+
 	private final Logger logger = Logger.getLogger(WeChatFilter.class);
 	private String _token;
 	private String conf = "classPath:wechat.properties";
@@ -50,10 +51,10 @@ public class WeChatFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		Boolean isGet = request.getMethod().equals("GET");
-		
+
 		String path = request.getServletPath();
 		String pathInfo = path.substring(path.lastIndexOf("/"));
-		
+
 		if (pathInfo == null) {
 			response.getWriter().write("error");
 		} else {
@@ -69,26 +70,26 @@ public class WeChatFilter implements Filter {
 	private void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/xml");
-		
+
 		OutMessage oms = new OutMessage();
 		ServletInputStream in = request.getInputStream();
-		//转换微信post过来的xml内容
+		// 转换微信post过来的xml内容
 		XStream xs = XStreamFactory.init(false);
 		xs.alias("xml", InMessage.class);
 		String xmlMsg = Tools.inputStream2String(in);
 		InMessage msg = (InMessage) xs.fromXML(xmlMsg);
-		//获取自定消息处理器，如果自定义处理器则使用默认处理器。
+		// 获取自定消息处理器，如果自定义处理器则使用默认处理器。
 		String handler = p.getProperty("MessageProcessingHandlerImpl");
-		if(handler== null)
+		if (handler == null)
 			handler = defaultHandler;
-		
+
 		try {
-			//加载处理器
+			// 加载处理器
 			Class<?> clazz = Class.forName(handler);
 			MessageProcessingHandler processingHandler = (MessageProcessingHandler) clazz.newInstance();
-			//取得消息类型
+			// 取得消息类型
 			String type = msg.getMsgType();
-			//针对不同类型消息进行处理
+			// 针对不同类型消息进行处理
 			if (type.equals(MessageProcessingHandler.MSG_TYPE_TEXT)) {
 				oms = processingHandler.textTypeMsg(msg);
 			} else if (type.equals(MessageProcessingHandler.MSG_TYPE_LOCATION)) {
@@ -97,14 +98,16 @@ public class WeChatFilter implements Filter {
 				oms = processingHandler.linkTypeMsg(msg);
 			} else if (type.equals(MessageProcessingHandler.MSG_TYPE_IMAGE)) {
 				oms = processingHandler.imageTypeMsg(msg);
+			} else if (type.equals(MessageProcessingHandler.MSG_TYPE_VOICE)) {
+				oms = processingHandler.voiceTypeMsg(msg);
 			} else if (type.equals(MessageProcessingHandler.MSG_TYPE_EVENT)) {
 				oms = processingHandler.eventTypeMsg(msg);
 			}
-			if(oms == null){
+			if (oms == null) {
 				oms = new OutMessage();
 				oms.setContent("系统错误!");
 			}
-			//设置发送信息
+			// 设置发送信息
 			oms.setCreateTime(new Date().getTime());
 			oms.setToUserName(msg.getFromUserName());
 			oms.setFromUserName(msg.getToUserName());
@@ -118,8 +121,8 @@ public class WeChatFilter implements Filter {
 			logger.error(e);
 			oms.setContent("系统错误！");
 		}
-		
-		//把发送发送对象转换为xml输出
+
+		// 把发送发送对象转换为xml输出
 		xs = XStreamFactory.init(false);
 		xs.alias("xml", OutMessage.class);
 		xs.alias("item", Articles.class);
@@ -131,15 +134,14 @@ public class WeChatFilter implements Filter {
 		String timestamp = request.getParameter("timestamp");// 时间戳
 		String nonce = request.getParameter("nonce");// 随机数
 		String echostr = request.getParameter("echostr");//
-		//验证
+		// 验证
 		if (Tools.checkSignature(_token, signature, timestamp, nonce)) {
 			response.getWriter().write(echostr);
 		}
 	}
 
 	/**
-	 * 启动的时候加载wechat.properties配置
-	 * 可以在过滤器配置wechat.properties路径
+	 * 启动的时候加载wechat.properties配置 可以在过滤器配置wechat.properties路径
 	 */
 	@Override
 	public void init(FilterConfig config) throws ServletException {

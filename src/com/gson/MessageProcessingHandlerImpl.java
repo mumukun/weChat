@@ -42,4 +42,10 @@ public class MessageProcessingHandlerImpl implements MessageProcessingHandler {
 		return null;
 	}
 
+	@Override
+	public OutMessage voiceTypeMsg(InMessage msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
