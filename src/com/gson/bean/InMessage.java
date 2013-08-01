@@ -27,7 +27,7 @@ public class InMessage {
 	// 事件
 	private String Event;
 	private String EventKey;
-    private String Ticket;
+	private String Ticket;
 
 	public String getToUserName() {
 		return ToUserName;
@@ -181,11 +181,11 @@ public class InMessage {
 		Recognition = recognition;
 	}
 
-    public String getTicket() {
-        return Ticket;
-    }
+	public String getTicket() {
+		return Ticket;
+	}
 
-    public void setTicket(String ticket) {
-        Ticket = ticket;
-    }
+	public void setTicket(String ticket) {
+		Ticket = ticket;
+	}
 }
