@@ -1,3 +1,8 @@
+/**
+ * 微信公众平台开发模式(JAVA) SDK
+ * (c) 2012-2013 ____′↘夏悸 <wmails@126.cn>, MIT Licensed
+ * http://www.jeasyuicn.com/wechat
+ */
 package com.gson.util;
 
 import java.io.IOException;
