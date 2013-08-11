@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Properties;
 
@@ -27,6 +29,7 @@ import org.apache.log4j.Logger;
 import com.gson.bean.Articles;
 import com.gson.bean.InMessage;
 import com.gson.bean.OutMessage;
+import com.gson.bean.TextOutMessage;
 import com.gson.inf.MessageProcessingHandler;
 import com.gson.util.Tools;
 import com.gson.util.XStreamFactory;
@@ -40,11 +43,11 @@ import com.thoughtworks.xstream.XStream;
  */
 public class WeChatFilter implements Filter {
 
-	private final Logger logger = Logger.getLogger(WeChatFilter.class);
-	private String _token;
-	private String conf = "classPath:wechat.properties";
-	private String defaultHandler = "com.gson.inf.DefaultMessageProcessingHandlerImpl";
-	private Properties p;
+	private final Logger	logger			= Logger.getLogger(WeChatFilter.class);
+	private String			_token;
+	private String			conf			= "classPath:wechat.properties";
+	private String			defaultHandler	= "com.gson.inf.DefaultMessageProcessingHandlerImpl";
+	private Properties		p;
 
 	@Override
 	public void destroy() {
@@ -94,42 +97,35 @@ public class WeChatFilter implements Filter {
 			MessageProcessingHandler processingHandler = (MessageProcessingHandler) clazz.newInstance();
 			// 取得消息类型
 			String type = msg.getMsgType();
-			// 针对不同类型消息进行处理
-			if (type.equals(MessageProcessingHandler.MSG_TYPE_TEXT)) {
-				oms = processingHandler.textTypeMsg(msg);
-			} else if (type.equals(MessageProcessingHandler.MSG_TYPE_LOCATION)) {
-				oms = processingHandler.locationTypeMsg(msg);
-			} else if (type.equals(MessageProcessingHandler.MSG_TYPE_LINK)) {
-				oms = processingHandler.linkTypeMsg(msg);
-			} else if (type.equals(MessageProcessingHandler.MSG_TYPE_IMAGE)) {
-				oms = processingHandler.imageTypeMsg(msg);
-			} else if (type.equals(MessageProcessingHandler.MSG_TYPE_VOICE)) {
-				oms = processingHandler.voiceTypeMsg(msg);
-			} else if (type.equals(MessageProcessingHandler.MSG_TYPE_EVENT)) {
-				oms = processingHandler.eventTypeMsg(msg);
-			}
+			Method mt = clazz.getMethod(type + "TypeMsg", InMessage.class);
+			oms = (OutMessage) mt.invoke(processingHandler, msg);
 			if (oms == null) {
-				oms = new OutMessage();
-				oms.setContent("系统错误!");
+				oms = new TextOutMessage();
+				((TextOutMessage) oms).setContent("系统错误!");
 			}
+			
 			// 设置发送信息
-			oms.setCreateTime(new Date().getTime());
-			oms.setToUserName(msg.getFromUserName());
-			oms.setFromUserName(msg.getToUserName());
-		} catch (ClassNotFoundException e) {
-			logger.error("没有找到" + handler + "类", e);
-			oms.setContent("系统错误！");
-		} catch (InstantiationException e) {
+			Class<?> outMsg = oms.getClass().getSuperclass();
+			Field CreateTime = outMsg.getDeclaredField("CreateTime");
+			Field ToUserName = outMsg.getDeclaredField("ToUserName");
+			Field FromUserName = outMsg.getDeclaredField("FromUserName");
+			
+			ToUserName.setAccessible(true);
+			CreateTime.setAccessible(true);
+			FromUserName.setAccessible(true);
+			
+			CreateTime.set(oms, new Date().getTime());
+			ToUserName.set(oms, msg.getFromUserName());
+			FromUserName.set(oms, msg.getToUserName());
+		} catch (Exception e) {
 			logger.error(e);
-			oms.setContent("系统错误！");
-		} catch (IllegalAccessException e) {
-			logger.error(e);
-			oms.setContent("系统错误！");
+			oms = new TextOutMessage();
+			((TextOutMessage) oms).setContent("系统错误!");
 		}
 
 		// 把发送发送对象转换为xml输出
-		xs = XStreamFactory.init(false);
-		xs.alias("xml", OutMessage.class);
+		xs = XStreamFactory.init(true);
+		xs.alias("xml", oms.getClass());
 		xs.alias("item", Articles.class);
 		xs.toXML(oms, response.getWriter());
 	}

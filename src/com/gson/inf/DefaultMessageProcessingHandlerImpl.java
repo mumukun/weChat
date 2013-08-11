@@ -7,11 +7,12 @@ package com.gson.inf;
 
 import com.gson.bean.InMessage;
 import com.gson.bean.OutMessage;
+import com.gson.bean.TextOutMessage;
 
 public abstract class DefaultMessageProcessingHandlerImpl implements MessageProcessingHandler{
 
 	private OutMessage allType(InMessage msg){
-		OutMessage out = new OutMessage();
+		TextOutMessage out = new TextOutMessage();
 		out.setContent("你的消息已经收到！");
 		return out;
 	}

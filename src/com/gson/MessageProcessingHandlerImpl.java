@@ -7,6 +7,7 @@ package com.gson;
 
 import com.gson.bean.InMessage;
 import com.gson.bean.OutMessage;
+import com.gson.bean.TextOutMessage;
 import com.gson.inf.MessageProcessingHandler;
 
 /**
@@ -18,7 +19,7 @@ public class MessageProcessingHandlerImpl implements MessageProcessingHandler {
 
 	@Override
 	public OutMessage textTypeMsg(InMessage msg) {
-		OutMessage oms = new OutMessage();
+		TextOutMessage oms = new TextOutMessage();
 		oms.setContent(msg.getContent());
 		return oms;
 	}
