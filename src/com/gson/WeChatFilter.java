@@ -85,9 +85,9 @@ public class WeChatFilter implements Filter {
 		XStream xs = XStreamFactory.init(false);
 		xs.alias("xml", InMessage.class);
 		String xmlMsg = Tools.inputStream2String(in);
-		
-		logger.debug("输入消息:["+xmlMsg+"]");
-		
+
+		logger.debug("输入消息:[" + xmlMsg + "]");
+
 		InMessage msg = (InMessage) xs.fromXML(xmlMsg);
 		// 获取自定消息处理器，如果自定义处理器则使用默认处理器。
 		String handler = p.getProperty("MessageProcessingHandlerImpl");
@@ -106,24 +106,16 @@ public class WeChatFilter implements Filter {
 				oms = new TextOutMessage();
 				((TextOutMessage) oms).setContent("系统错误!");
 			}
-			
-			// 设置发送信息
-			Class<?> outMsg = oms.getClass().getSuperclass();
-			Field CreateTime = outMsg.getDeclaredField("CreateTime");
-			Field ToUserName = outMsg.getDeclaredField("ToUserName");
-			Field FromUserName = outMsg.getDeclaredField("FromUserName");
-			
-			ToUserName.setAccessible(true);
-			CreateTime.setAccessible(true);
-			FromUserName.setAccessible(true);
-			
-			CreateTime.set(oms, new Date().getTime());
-			ToUserName.set(oms, msg.getFromUserName());
-			FromUserName.set(oms, msg.getToUserName());
+			setMsgInfo(oms,msg);
 		} catch (Exception e) {
 			logger.error(e);
 			oms = new TextOutMessage();
 			((TextOutMessage) oms).setContent("系统错误!");
+			try {
+				setMsgInfo(oms,msg);
+			} catch (Exception e1) {
+				logger.error(e);
+			}
 		}
 
 		// 把发送发送对象转换为xml输出
@@ -131,9 +123,9 @@ public class WeChatFilter implements Filter {
 		xs.alias("xml", oms.getClass());
 		xs.alias("item", Articles.class);
 		String xml = xs.toXML(oms);
-		
-		logger.debug("输出消息:["+xml+"]");
-		
+
+		logger.debug("输出消息:[" + xml + "]");
+
 		response.getWriter().write(xml);
 	}
 
@@ -146,6 +138,22 @@ public class WeChatFilter implements Filter {
 		if (Tools.checkSignature(_token, signature, timestamp, nonce)) {
 			response.getWriter().write(echostr);
 		}
+	}
+
+	private void setMsgInfo(OutMessage oms,InMessage msg) throws Exception {
+		// 设置发送信息
+		Class<?> outMsg = oms.getClass().getSuperclass();
+		Field CreateTime = outMsg.getDeclaredField("CreateTime");
+		Field ToUserName = outMsg.getDeclaredField("ToUserName");
+		Field FromUserName = outMsg.getDeclaredField("FromUserName");
+
+		ToUserName.setAccessible(true);
+		CreateTime.setAccessible(true);
+		FromUserName.setAccessible(true);
+
+		CreateTime.set(oms, new Date().getTime());
+		ToUserName.set(oms, msg.getFromUserName());
+		FromUserName.set(oms, msg.getToUserName());
 	}
 
 	/**
