@@ -85,6 +85,9 @@ public class WeChatFilter implements Filter {
 		XStream xs = XStreamFactory.init(false);
 		xs.alias("xml", InMessage.class);
 		String xmlMsg = Tools.inputStream2String(in);
+		
+		logger.debug("输入消息:["+xmlMsg+"]");
+		
 		InMessage msg = (InMessage) xs.fromXML(xmlMsg);
 		// 获取自定消息处理器，如果自定义处理器则使用默认处理器。
 		String handler = p.getProperty("MessageProcessingHandlerImpl");
@@ -127,7 +130,11 @@ public class WeChatFilter implements Filter {
 		xs = XStreamFactory.init(true);
 		xs.alias("xml", oms.getClass());
 		xs.alias("item", Articles.class);
-		xs.toXML(oms, response.getWriter());
+		String xml = xs.toXML(oms);
+		
+		logger.debug("输出消息:["+xml+"]");
+		
+		response.getWriter().write(xml);
 	}
 
 	private void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
