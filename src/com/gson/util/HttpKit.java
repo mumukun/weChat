@@ -89,7 +89,7 @@ public class HttpKit {
      * @return       返回类型: 
      * @createdate   建立日期：2013-10-21下午6:41:42
      */
-    public static String getWithSSL(String url, Map<String, String> params) {
+    public static String get(String url, Map<String, String> params) {
         return get(initParams(url, params));
     }
     

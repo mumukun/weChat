@@ -14,6 +14,7 @@ public class Message {
     // {"touser":"OPENID","msgtype":"text","text":{"content":"Hello World"}}
     public static void send(){
         String accessToken = WeChat.getAccessToken();
+        System.out.println(accessToken);
         String ss = HttpKit.post(MESSAGE_URL.concat(accessToken), "{\"touser\":\"oOGf-jgjmwxFVU66D-IFO2AFK8ic\",\"msgtype\":\"text\",\"text\":{\"content\":\"Hello World\"}}");
         System.out.println(ss);
     }
