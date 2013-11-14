@@ -6,7 +6,8 @@ import com.gson.util.Common;
 import com.gson.util.HttpKit;
 
 /**
- * 菜单
+ * 菜单,可以将accessToken
+ * 存储在session或者memcache中
  * @author L.cm
  * @date 2013-11-5 下午3:17:33
  */
