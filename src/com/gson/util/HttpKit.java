@@ -1,3 +1,8 @@
+/**
+ * 微信公众平台开发模式(JAVA) SDK
+ * (c) 2012-2013 ____′↘夏悸 <wmails@126.cn>, MIT Licensed
+ * http://www.jeasyuicn.com/wechat
+ */
 package com.gson.util;
 
 
@@ -20,6 +25,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * https 请求 微信为https的请求
@@ -29,15 +35,12 @@ import org.apache.commons.lang.StringUtils;
 public class HttpKit {
     
     private static final String DEFAULT_CHARSET = "UTF-8";
+    private static final Logger LOGGER = Logger.getLogger(HttpKit.class);
 
     /**
-     * 
-     * @description 
-     * 功能描述: get 请求 https
-     * @author           作         者: 卢春梦
-     * @param          参         数: 
-     * @return       返回类型: 
-     * @createdate   建立日期：2013-10-21下午6:41:48
+     * 发送Get请求
+     * @param url
+     * @return
      */
     public static String get(String url) {
         StringBuffer bufferRes = null;
@@ -76,31 +79,26 @@ public class HttpKit {
             return bufferRes.toString();
         } catch (Exception e) {
             e.printStackTrace();
+            LOGGER.error(url,e);
             return null;
         }
     }
-    
+
     /**
-     * 
-     * @description 
-     * 功能描述: get请求https
-     * @author           作         者: 卢春梦
-     * @param          参         数: 
-     * @return       返回类型: 
-     * @createdate   建立日期：2013-10-21下午6:41:42
+     *  发送Get请求
+     * @param url
+     * @param params
+     * @return
      */
     public static String get(String url, Map<String, String> params) {
         return get(initParams(url, params));
     }
-    
+
     /**
-     * 
-     * @description 
-     * 功能描述: POST 请求
-     * @author           作         者: 卢春梦
-     * @param          参         数: 
-     * @return       返回类型: 
-     * @createdate   建立日期：2013-10-21下午6:42:07
+     *  发送Post请求
+     * @param url
+     * @param params
+     * @return
      */
     public static String post(String url, String params) {
         StringBuffer bufferRes = null;
@@ -144,20 +142,18 @@ public class HttpKit {
             return bufferRes.toString();
         } catch (Exception e) {
             e.printStackTrace();
+            LOGGER.error(url,e);
             return null;
         }
     }
 
     /**
-     * 
-     * @description 
-     * 功能描述: 构造请求参数
-     * @author           作         者: 卢春梦
-     * @param          参         数: 
-     * @return       返回类型: 
-     * @createdate   建立日期：2013-10-21下午6:40:35
+     *
+     * @param url
+     * @param params
+     * @return
      */
-    public static String initParams(String url, Map<String, String> params){
+    private static String initParams(String url, Map<String, String> params){
         if (null == params || params.isEmpty()) {
             return url;
         }
@@ -182,6 +178,7 @@ public class HttpKit {
                     sb.append(URLEncoder.encode(value, DEFAULT_CHARSET));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+                    LOGGER.error(url,e);
                 }
             }
         }
@@ -189,7 +186,9 @@ public class HttpKit {
     }
 }
 
-// 证书管理
+/**
+ * 证书管理
+ */
 class MyX509TrustManager implements X509TrustManager {
 
     public X509Certificate[] getAcceptedIssuers() {

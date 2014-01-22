@@ -2,7 +2,8 @@ package com.gson.oauth;
 
 import java.util.Map;
 
-import com.gson.util.Common;
+import com.alibaba.fastjson.JSON;
+import com.gson.WeChat;
 import com.gson.util.HttpKit;
 
 /**
@@ -19,7 +20,7 @@ public class Menu {
     public static boolean createMenu(String params) {
         String accessToken = WeChat.getAccessToken();
         String jsonStr = HttpKit.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken, params);
-        Map<String, Object> map = Common.jsonToMap(jsonStr);
+        Map<String, Object> map = JSON.parseObject(jsonStr,Map.class);
         return "0".equals(map.get("errcode").toString());
     }
     
@@ -29,7 +30,7 @@ public class Menu {
     public static Map<String, Object> getMenuInfo() {
         String accessToken = WeChat.getAccessToken();
         String jsonStr = HttpKit.get("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=" + accessToken);
-        Map<String, Object> map = Common.jsonToMap(jsonStr);
+        Map<String, Object> map = JSON.parseObject(jsonStr, Map.class);
         return map;
     }
     
@@ -39,11 +40,7 @@ public class Menu {
     public static boolean deleteMenu() {
         String accessToken = WeChat.getAccessToken();
         String jsonStr = HttpKit.get("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=" + accessToken);
-        Map<String, Object> map = Common.jsonToMap(jsonStr);
+        Map<String, Object> map = JSON.parseObject(jsonStr, Map.class);
         return "0".equals(map.get("errcode").toString());
-    }
-    
-    public static void main(String[] args) {
-        System.out.println(getMenuInfo());
     }
 }
