@@ -7,7 +7,6 @@ package com.gson.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -140,11 +139,7 @@ public class OauthWeChat {
                 valueString = value.toString();
             }
             if (encode) {
-                try {
-                    temp.append(URLEncoder.encode(valueString, "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                temp.append(URLEncoder.encode(valueString));
             } else {
                 temp.append(valueString);
             }
