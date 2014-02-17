@@ -7,7 +7,7 @@ package com.gson.bean;
 
 /**
  * 多图文消息
- * @author east.com
+ * @author ____′↘夏悸
  *
  */
 public class Articles {

@@ -19,9 +19,17 @@ public interface MessageProcessingHandler {
 	public final static String MSG_TYPE_LINK = "link";
 	public final static String MSG_TYPE_VOICE = "voice";
 	public final static String MSG_TYPE_EVENT = "event";
+	public final static String MSG_TYPE_VIDEO = "video";
 	
 	public final static String MSG_TYPE_NEWS = "news";
 	public final static String MSG_TYPE_MUSIC = "music";
+	
+	/**
+	 * 统一处理器
+	 * @param msg
+	 * @return
+	 */
+	public OutMessage allType(InMessage msg);
 	
 	/**
 	 * 文字内容的消息处理
@@ -43,6 +51,13 @@ public interface MessageProcessingHandler {
 	 * @return
 	 */
 	public OutMessage imageTypeMsg(InMessage msg);
+	
+	/**
+	 * 视频类型的消息处理
+	 * @param msg
+	 * @return
+	 */
+	public OutMessage videoTypeMsg(InMessage msg);
 	
 	/**
 	 * 链接类型的消息处理

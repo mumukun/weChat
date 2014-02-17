@@ -1,5 +1,10 @@
 package com.gson.oauth;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 import com.gson.WeChat;
 import com.gson.util.HttpKit;
 
@@ -17,8 +22,12 @@ public class Message {
      * 发送文本客服消息
      * @param openId
      * @param text
+     * @throws IOException 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws KeyManagementException 
      */
-    public static String sendText(String openId, String text) {
+    public String sendText(String openId, String text) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         String accessToken = WeChat.getAccessToken();
         String reslut = HttpKit.post(MESSAGE_URL.concat(accessToken), "{\"touser\":\"" + openId + "\",\"msgtype\":\"text\",\"text\":{\"content\":\"" + text + "\"}}");
         return reslut;

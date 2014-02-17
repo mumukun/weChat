@@ -18,6 +18,12 @@ import com.gson.inf.MessageProcessingHandler;
 public class MessageProcessingHandlerImpl implements MessageProcessingHandler {
 
 	@Override
+	public OutMessage allType(InMessage msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public OutMessage textTypeMsg(InMessage msg) {
 		TextOutMessage oms = new TextOutMessage();
 		oms.setContent(msg.getContent());
@@ -32,6 +38,12 @@ public class MessageProcessingHandlerImpl implements MessageProcessingHandler {
 
 	@Override
 	public OutMessage imageTypeMsg(InMessage msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public OutMessage videoTypeMsg(InMessage msg) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,5 +65,4 @@ public class MessageProcessingHandlerImpl implements MessageProcessingHandler {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

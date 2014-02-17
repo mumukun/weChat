@@ -1,5 +1,9 @@
 package com.gson.oauth;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
@@ -16,8 +20,12 @@ public class Menu {
 
     /**
      * 创建菜单
+     * @throws IOException 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws KeyManagementException 
      */
-    public static boolean createMenu(String params) {
+    public boolean createMenu(String params) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         String accessToken = WeChat.getAccessToken();
         String jsonStr = HttpKit.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken, params);
         Map<String, Object> map = JSON.parseObject(jsonStr,Map.class);
@@ -26,8 +34,12 @@ public class Menu {
     
     /**
      * 查询菜单
+     * @throws IOException 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws KeyManagementException 
      */
-    public static Map<String, Object> getMenuInfo() {
+    public Map<String, Object> getMenuInfo() throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         String accessToken = WeChat.getAccessToken();
         String jsonStr = HttpKit.get("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=" + accessToken);
         Map<String, Object> map = JSON.parseObject(jsonStr, Map.class);
@@ -36,8 +48,12 @@ public class Menu {
     
     /**
      * 删除自定义菜单
+     * @throws IOException 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws KeyManagementException 
      */
-    public static boolean deleteMenu() {
+    public boolean deleteMenu() throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         String accessToken = WeChat.getAccessToken();
         String jsonStr = HttpKit.get("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=" + accessToken);
         Map<String, Object> map = JSON.parseObject(jsonStr, Map.class);
