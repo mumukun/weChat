@@ -5,13 +5,17 @@
  */
 package com.gson.util;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
+import java.io.IOException;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.codec.digest.DigestUtils;
 /**
  * 微信Oauth和支付工具类
  *
@@ -60,8 +64,12 @@ public class OauthWeChat {
      * 通过code 换取 access_token
      * @param code
      * @return
+     * @throws IOException 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws KeyManagementException 
      */
-    public String getToken(String code) {
+    public String getToken(String code) throws Exception {
         Map<String, String> params = new HashMap<String, String>();
         params.put("appid", getAppid());
         params.put("secret", getSecret());
@@ -74,8 +82,12 @@ public class OauthWeChat {
      * 刷新 access_token
      * @param refreshToken
      * @return
+     * @throws IOException 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws KeyManagementException 
      */
-    public String getRefreshToken(String refreshToken) {
+    public String getRefreshToken(String refreshToken) throws Exception {
         Map<String, String> params = new HashMap<String, String>();
         params.put("appid", getAppid());
         params.put("grant_type", "refresh_token");
@@ -88,8 +100,12 @@ public class OauthWeChat {
      * @param accessToken
      * @param openid
      * @return
+     * @throws IOException 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws KeyManagementException 
      */
-    public String getUserInfo(String accessToken, String openid) {
+    public String getUserInfo(String accessToken, String openid) throws Exception {
         Map<String, String> params = new HashMap<String, String>();
         params.put("access_token", accessToken);
         params.put("openid", openid);
