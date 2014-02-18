@@ -93,6 +93,48 @@ public class HttpKit {
         }
         return bufferRes.toString();
     }
+    
+    /**
+     * 发送Get请求
+     * @param url
+     * @return
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws IOException 
+     * @throws KeyManagementException 
+     */
+    public static String get(String url,Boolean https) throws NoSuchAlgorithmException, NoSuchProviderException, IOException, KeyManagementException {
+    	if(https != null && https){
+    		return get(url);
+    	}else{
+    		StringBuffer bufferRes = null;
+            URL urlGet = new URL(url);
+            HttpURLConnection http = (HttpURLConnection) urlGet.openConnection();
+            // 连接超时
+            http.setConnectTimeout(25000);
+            // 读取超时 --服务器响应比较慢，增大时间
+            http.setReadTimeout(25000);
+            http.setRequestMethod("GET");
+            http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            http.setDoOutput(true);
+            http.setDoInput(true);
+            http.connect();
+            
+            InputStream in = http.getInputStream();
+            BufferedReader read = new BufferedReader(new InputStreamReader(in, DEFAULT_CHARSET));
+            String valueString = null;
+            bufferRes = new StringBuffer();
+            while ((valueString = read.readLine()) != null){
+                bufferRes.append(valueString);
+            }
+            in.close();
+            if (http != null) {
+                // 关闭连接
+                http.disconnect();
+            }
+            return bufferRes.toString();
+    	}
+    }
 
     /**
      *  发送Get请求
@@ -229,6 +271,7 @@ public class HttpKit {
      * @throws IOException
      */
     public static Attachment download(String url) throws IOException{
+    	Attachment att = new Attachment();
     	 URL urlGet = new URL(url);
          HttpURLConnection conn = (HttpURLConnection) urlGet.openConnection();
          conn.setDoOutput(true);  
@@ -236,13 +279,32 @@ public class HttpKit {
          conn.setUseCaches(false);  
          conn.setRequestMethod("GET");  
          conn.connect(); 
-         BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());  
-         String ds = conn.getHeaderField("Content-disposition");
-         Attachment att = new Attachment();
-         att.setFilename(ds.substring(ds.indexOf("filename=\"")+10,ds.length()-1));
-         att.setContentLength(conn.getHeaderField("Content-Length"));
-         att.setContentType(conn.getHeaderField("Content-Type"));
-         att.setFileStream(bis);
+         if(conn.getContentType().equalsIgnoreCase("text/plain")){
+        	// 定义BufferedReader输入流来读取URL的响应  
+             InputStream in = conn.getInputStream();
+             BufferedReader read = new BufferedReader(new InputStreamReader(in, DEFAULT_CHARSET));
+             String valueString = null;
+             StringBuffer bufferRes = new StringBuffer();
+             while ((valueString = read.readLine()) != null){
+                 bufferRes.append(valueString);
+             }
+             in.close();
+             att.setError(bufferRes.toString());
+         }else{
+        	 BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());  
+             String ds = conn.getHeaderField("Content-disposition");
+             String fullName = ds.substring(ds.indexOf("filename=\"")+10,ds.length()-1);
+             String relName = fullName.substring(0, fullName.lastIndexOf("."));
+             String suffix = fullName.substring(relName.length()+1);
+             
+             att.setFullName(fullName);
+             att.setFileName(relName);
+             att.setSuffix(suffix);
+             att.setContentLength(conn.getHeaderField("Content-Length"));
+             att.setContentType(conn.getHeaderField("Content-Type"));
+             
+             att.setFileStream(bis);
+         }
          return att;
     }
 
@@ -283,6 +345,13 @@ public class HttpKit {
         }
         return sb.toString();
     }
+    
+    public static void main(String[] args) {
+    	String fname = "dsasdas.mp4";
+    	String s = fname.substring(0, fname.lastIndexOf("."));
+    	String f = fname.substring(s.length()+1);
+		System.out.println(f);
+	}
 }
 
 /**

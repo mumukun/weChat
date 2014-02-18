@@ -143,12 +143,11 @@ public class WeChat {
             }
             setMsgInfo(oms, inMessage);
         } catch (Exception e) {
-            
+        	throw new RuntimeException(e);
         }
         if(oms != null){
             // 把发送发送对象转换为xml输出
             XStream xs = XStreamFactory.init(true);
-            xs.ignoreUnknownElements();
             xs.alias("xml", oms.getClass());
             xs.alias("item", Articles.class);
             xml = xs.toXML(oms);

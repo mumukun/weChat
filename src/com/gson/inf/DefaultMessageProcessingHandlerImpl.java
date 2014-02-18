@@ -14,38 +14,38 @@ public abstract class DefaultMessageProcessingHandlerImpl implements MessageProc
 	@Override
 	public OutMessage allType(InMessage msg){
 		TextOutMessage out = new TextOutMessage();
-		out.setContent("你的消息已经收到！");
+		out.setContent("您的消息已经收到！");
 		return out;
 	}
 	
 	@Override
 	public OutMessage textTypeMsg(InMessage msg) {
-		return allType(msg);
+		return null;
 	}
 
 	@Override
 	public OutMessage locationTypeMsg(InMessage msg) {
-		return allType(msg);
+		return null;
 	}
 
 	@Override
 	public OutMessage imageTypeMsg(InMessage msg) {
-		return allType(msg);
+		return null;
 	}
 	
 	@Override
 	public OutMessage videoTypeMsg(InMessage msg) {
-		return allType(msg);
+		return null;
 	}
 
 	@Override
 	public OutMessage linkTypeMsg(InMessage msg) {
-		return allType(msg);
+		return null;
 	}
 
 	@Override
 	public OutMessage eventTypeMsg(InMessage msg) {
-		return allType(msg);
+		return null;
 	}
 
 }

@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>wechat</groupId>
     <artifactId>wechat</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <version>1.0</version>
+    <packaging>jar</packaging>
     <name>wechat</name>
     <description />
     <properties>
@@ -57,15 +57,10 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <warSourceDirectory>${basedir}/WebRoot</warSourceDirectory>
-                    <version>3.0</version>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <excludes>
+                    	<exclude>*.properties</exclude>
+                    	<exclude>com/gson/WeChatFilter.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
