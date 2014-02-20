@@ -5,16 +5,21 @@
  */
 package com.gson.bean;
 
+import java.io.Serializable;
+
 /**
  * 多图文消息
  * @author ____′↘夏悸
  *
  */
-public class Articles {
+public class Articles implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private String Title;
 	private String Description;
 	private String PicUrl;
 	private String Url;
+	
 	public String getTitle() {
 		return Title;
 	}

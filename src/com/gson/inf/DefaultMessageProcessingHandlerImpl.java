@@ -11,41 +11,54 @@ import com.gson.bean.TextOutMessage;
 
 public abstract class DefaultMessageProcessingHandlerImpl implements MessageProcessingHandler{
 
+	private OutMessage outMessage;
+	
 	@Override
-	public OutMessage allType(InMessage msg){
+	public void allType(InMessage msg){
 		TextOutMessage out = new TextOutMessage();
 		out.setContent("您的消息已经收到！");
-		return out;
+		setOutMessage(out);
 	}
 	
 	@Override
-	public OutMessage textTypeMsg(InMessage msg) {
-		return null;
+	public void textTypeMsg(InMessage msg) {
 	}
 
 	@Override
-	public OutMessage locationTypeMsg(InMessage msg) {
-		return null;
+	public void locationTypeMsg(InMessage msg) {
 	}
 
 	@Override
-	public OutMessage imageTypeMsg(InMessage msg) {
-		return null;
+	public void imageTypeMsg(InMessage msg) {
 	}
 	
 	@Override
-	public OutMessage videoTypeMsg(InMessage msg) {
-		return null;
+	public void videoTypeMsg(InMessage msg) {
+	}
+	
+	@Override
+	public void voiceTypeMsg(InMessage msg) {
 	}
 
 	@Override
-	public OutMessage linkTypeMsg(InMessage msg) {
-		return null;
+	public void linkTypeMsg(InMessage msg) {
 	}
 
 	@Override
-	public OutMessage eventTypeMsg(InMessage msg) {
-		return null;
+	public void eventTypeMsg(InMessage msg) {
 	}
-
+	
+	@Override
+	public void setOutMessage(OutMessage outMessage) {
+		this.outMessage = outMessage;
+	}
+	
+	@Override
+	public void afterProcess(InMessage inMessage,OutMessage outMessage) {
+	}
+	
+	@Override
+	public OutMessage getOutMessage() {
+		return outMessage;
+	}
 }

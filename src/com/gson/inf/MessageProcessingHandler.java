@@ -29,53 +29,70 @@ public interface MessageProcessingHandler {
 	 * @param msg
 	 * @return
 	 */
-	public OutMessage allType(InMessage msg);
+	public void allType(InMessage msg);
 	
 	/**
 	 * 文字内容的消息处理
 	 * @param msg
 	 * @return
 	 */
-	public OutMessage textTypeMsg(InMessage msg);
+	public void textTypeMsg(InMessage msg);
 	
 	/**
 	 * 地理位置类型的消息处理
 	 * @param msg
 	 * @return
 	 */
-	public OutMessage locationTypeMsg(InMessage msg);
+	public void locationTypeMsg(InMessage msg);
 	
 	/**
 	 * 图片类型的消息处理
 	 * @param msg
 	 * @return
 	 */
-	public OutMessage imageTypeMsg(InMessage msg);
+	public void imageTypeMsg(InMessage msg);
 	
 	/**
 	 * 视频类型的消息处理
 	 * @param msg
 	 * @return
 	 */
-	public OutMessage videoTypeMsg(InMessage msg);
+	public void videoTypeMsg(InMessage msg);
 	
 	/**
 	 * 链接类型的消息处理
 	 * @param msg
 	 * @return
 	 */
-	public OutMessage linkTypeMsg(InMessage msg);
+	public void linkTypeMsg(InMessage msg);
 	/**
 	 * 语音类型的消息处理
 	 * @param msg
 	 * @return
 	 */
-	public OutMessage voiceTypeMsg(InMessage msg);
+	public void voiceTypeMsg(InMessage msg);
 	/**
 	 * 事件类型的消息处理。<br/>
 	 * 在用户首次关注公众账号时，系统将会推送一条subscribe的事件
 	 * @param msg
 	 * @return
 	 */
-	public OutMessage eventTypeMsg(InMessage msg);
+	public void eventTypeMsg(InMessage msg);
+
+	/**
+	 * 处理流程结束，返回输出信息之前执行
+	 */
+	public void afterProcess(InMessage inMsg,OutMessage outMsg);
+	
+	/**
+	 * 设置输出
+	 * @param outMessage
+	 */
+	public void setOutMessage(OutMessage outMessage);
+	
+	/**
+	 * 处返回输出对象
+	 */
+	public OutMessage getOutMessage();
+	
 }

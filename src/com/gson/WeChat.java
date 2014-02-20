@@ -45,7 +45,7 @@ public class WeChat {
     public static final String GET_MEDIA_URL= "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=";
     public static final String UPLOAD_MEDIA_URL= "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=";
     
-    private static MessageProcessingHandler messageProcessingHandler = null;
+    private static Class<?>  messageProcessingHandlerClazz = null;
     /**
      * 消息操作接口
      */
@@ -116,32 +116,41 @@ public class WeChat {
         InMessage inMessage = parsingInMessage(responseInputString);
         OutMessage oms = new OutMessage();
         // 加载处理器
-        if (messageProcessingHandler == null) {
+        if (messageProcessingHandlerClazz == null) {
             // 获取自定消息处理器，如果自定义处理器则使用默认处理器。
             String handler = ConfKit.get("MessageProcessingHandlerImpl");
             handler = handler == null ? DEFAULT_HANDLER : handler;
             try {
-                Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(handler);
-                messageProcessingHandler = (MessageProcessingHandler) clazz.newInstance();
+            	messageProcessingHandlerClazz = Thread.currentThread().getContextClassLoader().loadClass(handler);
             } catch (Exception e) {
                 throw new RuntimeException("messageProcessingHandler Load Error！");
             }
         }
         String xml = "";
         try {
+        	MessageProcessingHandler messageProcessingHandler = (MessageProcessingHandler) messageProcessingHandlerClazz.newInstance();
             //取得消息类型
             String type = inMessage.getMsgType();
+            Method getOutMessage = messageProcessingHandler.getClass().getMethod("getOutMessage");
             Method alMt = messageProcessingHandler.getClass().getMethod("allType", InMessage.class);
-            oms = (OutMessage) alMt.invoke(messageProcessingHandler, inMessage);
-            
             Method mt = messageProcessingHandler.getClass().getMethod(type + "TypeMsg", InMessage.class);
+            
+            alMt.invoke(messageProcessingHandler, inMessage);
+           
             if(mt != null){
-            	OutMessage mtMms = (OutMessage) mt.invoke(messageProcessingHandler, inMessage);
-            	if(mtMms!=null){
-            		oms = mtMms;
-            	}
+            	mt.invoke(messageProcessingHandler, inMessage);
             }
-            setMsgInfo(oms, inMessage);
+            
+            Object obj = getOutMessage.invoke(messageProcessingHandler);
+            if(obj != null){
+            	oms = (OutMessage) obj;
+            	setMsgInfo(oms, inMessage);
+            }
+            //调用事后处理
+            try {
+            	Method aftMt =  messageProcessingHandler.getClass().getMethod("afterProcess",OutMessage.class);
+            	aftMt.invoke(messageProcessingHandler, oms);
+			} catch (Exception e) {}
         } catch (Exception e) {
         	throw new RuntimeException(e);
         }

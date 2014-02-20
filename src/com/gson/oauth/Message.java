@@ -5,7 +5,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
-import com.gson.WeChat;
 import com.gson.util.HttpKit;
 
 /**
@@ -27,8 +26,7 @@ public class Message {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-    public String sendText(String openId, String text) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
-        String accessToken = WeChat.getAccessToken();
+    public String sendText(String accessToken,String openId, String text) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         String reslut = HttpKit.post(MESSAGE_URL.concat(accessToken), "{\"touser\":\"" + openId + "\",\"msgtype\":\"text\",\"text\":{\"content\":\"" + text + "\"}}");
         return reslut;
     }

@@ -7,7 +7,6 @@ import java.security.NoSuchProviderException;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
-import com.gson.WeChat;
 import com.gson.util.HttpKit;
 
 /**
@@ -25,8 +24,7 @@ public class Menu {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-    public boolean createMenu(String params) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
-        String accessToken = WeChat.getAccessToken();
+    public boolean createMenu(String accessToken,String params) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         String jsonStr = HttpKit.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken, params);
         Map<String, Object> map = JSON.parseObject(jsonStr,Map.class);
         return "0".equals(map.get("errcode").toString());
@@ -39,8 +37,7 @@ public class Menu {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-    public Map<String, Object> getMenuInfo() throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
-        String accessToken = WeChat.getAccessToken();
+    public Map<String, Object> getMenuInfo(String accessToken) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         String jsonStr = HttpKit.get("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=" + accessToken);
         Map<String, Object> map = JSON.parseObject(jsonStr, Map.class);
         return map;
@@ -53,8 +50,7 @@ public class Menu {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-    public boolean deleteMenu() throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
-        String accessToken = WeChat.getAccessToken();
+    public boolean deleteMenu(String accessToken) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         String jsonStr = HttpKit.get("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=" + accessToken);
         Map<String, Object> map = JSON.parseObject(jsonStr, Map.class);
         return "0".equals(map.get("errcode").toString());
