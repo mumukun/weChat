@@ -114,7 +114,7 @@ public class WeChat {
      */
     public static String processing(String responseInputString) {
         InMessage inMessage = parsingInMessage(responseInputString);
-        OutMessage oms = new OutMessage();
+        OutMessage oms = null;
         // 加载处理器
         if (messageProcessingHandlerClazz == null) {
             // 获取自定消息处理器，如果自定义处理器则使用默认处理器。
@@ -148,8 +148,8 @@ public class WeChat {
             }
             //调用事后处理
             try {
-            	Method aftMt =  messageProcessingHandler.getClass().getMethod("afterProcess",OutMessage.class);
-            	aftMt.invoke(messageProcessingHandler, oms);
+            	Method aftMt =  messageProcessingHandler.getClass().getMethod("afterProcess",InMessage.class,OutMessage.class);
+            	aftMt.invoke(messageProcessingHandler, inMessage, oms);
 			} catch (Exception e) {}
         } catch (Exception e) {
         	throw new RuntimeException(e);
