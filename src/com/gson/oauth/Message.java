@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import com.gson.util.HttpKit;
 
 /**
@@ -27,7 +30,14 @@ public class Message {
      * @throws KeyManagementException 
      */
     public String sendText(String accessToken,String openId, String text) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
-        String reslut = HttpKit.post(MESSAGE_URL.concat(accessToken), "{\"touser\":\"" + openId + "\",\"msgtype\":\"text\",\"text\":{\"content\":\"" + text + "\"}}");
+        Map<String,Object> json = new HashMap<String,Object>();
+        Map<String,Object> textObj = new HashMap<String,Object>();
+        textObj.put("content", text);
+        json.put("touser", openId);
+        json.put("msgtype", "text");
+        json.put("text", textObj);
+        String post = JSONObject.toJSONString(json);
+    	String reslut = HttpKit.post(MESSAGE_URL.concat(accessToken), post);
         return reslut;
     }
 }
