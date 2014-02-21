@@ -3,7 +3,7 @@
  * (c) 2012-2013 ____′↘夏悸 <wmails@126.cn>, MIT Licensed
  * http://www.jeasyuicn.com/wechat
  */
-package com.gson.util;
+package com.gson.oauth;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
+
+import com.gson.util.ConfKit;
+import com.gson.util.HttpKit;
+import com.gson.util.SHA1;
 /**
  * 微信Oauth和支付工具类
  *
@@ -27,7 +31,6 @@ public class OauthWeChat {
     private static final String CODE_URI = "http://open.weixin.qq.com/connect/oauth2/authorize";
     private static final String TOKEN_URI = "https://api.weixin.qq.com/sns/oauth2/access_token";
     private static final String REFRESH_TOKEN_URI = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
-    private static final String USER_INFO_URI = "https://api.weixin.qq.com/sns/userinfo";
 
     private String appid;
     private String secret;
@@ -95,22 +98,6 @@ public class OauthWeChat {
         return HttpKit.get(REFRESH_TOKEN_URI, params);
     }
 
-    /**
-     * 拉取用户信息
-     * @param accessToken
-     * @param openid
-     * @return
-     * @throws IOException 
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
-     * @throws KeyManagementException 
-     */
-    public String getUserInfo(String accessToken, String openid) throws Exception {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("access_token", accessToken);
-        params.put("openid", openid);
-        return HttpKit.get(USER_INFO_URI, params);
-    }
     /**
      * 参与 paySign 签名的字段包括：appid、timestamp、noncestr、package 以及 appkey。
      * 这里 signType 并不参与签名微信的Package参数

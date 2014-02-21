@@ -23,8 +23,10 @@ import com.gson.bean.Attachment;
 import com.gson.bean.InMessage;
 import com.gson.bean.OutMessage;
 import com.gson.inf.MessageProcessingHandler;
+import com.gson.oauth.Group;
 import com.gson.oauth.Menu;
 import com.gson.oauth.Message;
+import com.gson.oauth.User;
 import com.gson.util.ConfKit;
 import com.gson.util.HttpKit;
 import com.gson.util.Tools;
@@ -38,12 +40,11 @@ import com.thoughtworks.xstream.XStream;
  * @date 2013-11-5 下午3:01:20
  */
 public class WeChat {
-    public static final String ACCESSTOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential";
-    public static final String PAYFEEDBACK_URL = "https://api.weixin.qq.com/payfeedback/update";
-    public static final String DEFAULT_HANDLER = "com.gson.inf.DefaultMessageProcessingHandlerImpl";
-    public static final String USER_INFO_URL = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=";
-    public static final String GET_MEDIA_URL= "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=";
-    public static final String UPLOAD_MEDIA_URL= "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=";
+	private static final String ACCESSTOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential";
+	private static final String PAYFEEDBACK_URL = "https://api.weixin.qq.com/payfeedback/update";
+	private static final String DEFAULT_HANDLER = "com.gson.inf.DefaultMessageProcessingHandlerImpl";
+	private static final String GET_MEDIA_URL= "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=";
+	private static final String UPLOAD_MEDIA_URL= "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=";
     
     private static Class<?>  messageProcessingHandlerClazz = null;
     /**
@@ -54,19 +55,21 @@ public class WeChat {
      * 菜单操作接口
      */
     public static final Menu menu = new Menu();
+    /**
+     * 用户操作接口
+     */
+    public static final User user = new User();
+    /**
+     * 分组操作接口
+     */
+    public static final Group group = new Group();
 
     /**
-     * @throws IOException 
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
-     * @throws KeyManagementException 
      * 获取access_token
-     *
-     * @param @return 设定文件
-     * @return String    返回类型
-     * @throws
+     * @return
+     * @throws Exception
      */
-    public static String getAccessToken() throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+    public static String getAccessToken() throws Exception {
         String appid = ConfKit.get("AppId");
         String secret = ConfKit.get("AppSecret");
         String jsonStr = HttpKit.get(ACCESSTOKEN_URL.concat("&appid=") + appid + "&secret=" + secret);
@@ -74,17 +77,14 @@ public class WeChat {
         return map.get("access_token").toString();
     }
 
-    /**
-     * 支付反馈
-     * @param openid
-     * @param feedbackid
-     * @return
-     * @throws IOException 
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
-     * @throws KeyManagementException 
-     */
-    public static boolean payfeedback(String openid, String feedbackid) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+   /**
+    * 支付反馈
+    * @param openid
+    * @param feedbackid
+    * @return
+    * @throws Exception
+    */
+    public static boolean payfeedback(String openid, String feedbackid) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
         String accessToken = getAccessToken();
         map.put("access_token", accessToken);
@@ -162,22 +162,6 @@ public class WeChat {
             xml = xs.toXML(oms);
         }
         return xml;
-    }
-
-    /**
-     * 获取用户信息
-     * @param openid
-     * @return
-     * @throws IOException 
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
-     * @throws KeyManagementException 
-     */
-    @SuppressWarnings("unchecked")
-	public static Map<String, Object> getInfo(String openid,String accessToken) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
-        String url = USER_INFO_URL + accessToken + "&openid=" + openid;
-        String jsonStr = HttpKit.get(url);
-        return JSON.parseObject(jsonStr,Map.class);
     }
 
     /**
