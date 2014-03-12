@@ -9,7 +9,7 @@ import com.gson.bean.InMessage;
 import com.gson.bean.OutMessage;
 import com.gson.bean.TextOutMessage;
 
-public abstract class DefaultMessageProcessingHandlerImpl implements MessageProcessingHandler{
+public class DefaultMessageProcessingHandlerImpl implements MessageProcessingHandler{
 
 	private OutMessage outMessage;
 	
