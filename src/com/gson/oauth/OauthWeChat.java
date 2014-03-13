@@ -1,11 +1,12 @@
 /**
  * 微信公众平台开发模式(JAVA) SDK
- * (c) 2012-2013 ____′↘夏悸 <wmails@126.cn>, MIT Licensed
+ * (c) 2012-2014 ____′↘夏悸 <wmails@126.cn>, MIT Licensed
  * http://www.jeasyuicn.com/wechat
  */
 package com.gson.oauth;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -50,8 +51,9 @@ public class OauthWeChat {
     /**
      * 请求code
      * @return
+     * @throws UnsupportedEncodingException 
      */
-    public String getCode() {
+    public String getCode() throws UnsupportedEncodingException {
         Map<String, String> params = new HashMap<String, String>();
         params.put("appid", getAppid());
         params.put("response_type", "code");
@@ -103,8 +105,9 @@ public class OauthWeChat {
      * 这里 signType 并不参与签名微信的Package参数
      * @param params
      * @return
+     * @throws UnsupportedEncodingException 
      */
-    public static String getPackage(Map<String, String> params) {
+    public static String getPackage(Map<String, String> params) throws UnsupportedEncodingException {
         String partnerKey = ConfKit.get("partnerKey");
         String partnerId = ConfKit.get("partnerId");
         String notifyUrl = ConfKit.get("notify_url");
@@ -122,8 +125,9 @@ public class OauthWeChat {
      * @param params
      * @param encode
      * @return
+     * @throws UnsupportedEncodingException 
      */
-    public static String createSign(Map<String, String> params, boolean encode) {
+    public static String createSign(Map<String, String> params, boolean encode) throws UnsupportedEncodingException {
         Set<String> keysSet = params.keySet();
         Object[] keys = keysSet.toArray();
         Arrays.sort(keys);
@@ -142,7 +146,7 @@ public class OauthWeChat {
                 valueString = value.toString();
             }
             if (encode) {
-                temp.append(URLEncoder.encode(valueString));
+                temp.append(URLEncoder.encode(valueString,"UTF8"));
             } else {
                 temp.append(valueString);
             }
@@ -155,8 +159,9 @@ public class OauthWeChat {
      * @param params
      * @param paternerKey
      * @return
+     * @throws UnsupportedEncodingException 
      */
-    private static String packageSign(Map<String, String> params,String paternerKey) {
+    private static String packageSign(Map<String, String> params,String paternerKey) throws UnsupportedEncodingException {
         String string1 = createSign(params, false);
         String stringSignTemp = string1 + "&key=" + paternerKey;
         String signValue = DigestUtils.md5Hex(stringSignTemp).toUpperCase();
@@ -170,8 +175,9 @@ public class OauthWeChat {
      * @param noncestr
      * @param packages
      * @return
+     * @throws UnsupportedEncodingException 
      */
-    public static String paySign(String timestamp, String noncestr,String packages) {
+    public static String paySign(String timestamp, String noncestr,String packages) throws UnsupportedEncodingException {
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("appid", ConfKit.get("AppId"));
         paras.put("timestamp", timestamp);

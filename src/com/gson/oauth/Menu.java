@@ -1,3 +1,8 @@
+/**
+ * 微信公众平台开发模式(JAVA) SDK
+ * (c) 2012-2014 ____′↘夏悸 <wmails@126.cn>, MIT Licensed
+ * http://www.jeasyuicn.com/wechat
+ */
 package com.gson.oauth;
 
 import java.io.IOException;
@@ -15,6 +20,7 @@ import com.gson.util.HttpKit;
  * @author L.cm
  * @date 2013-11-5 下午3:17:33
  */
+@SuppressWarnings("unchecked")
 public class Menu {
 
     /**
@@ -24,7 +30,7 @@ public class Menu {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-    public boolean createMenu(String accessToken,String params) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+	public boolean createMenu(String accessToken,String params) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         String jsonStr = HttpKit.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken, params);
         Map<String, Object> map = JSON.parseObject(jsonStr,Map.class);
         return "0".equals(map.get("errcode").toString());

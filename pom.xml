@@ -60,6 +60,7 @@
                     <excludes>
                     	<exclude>*.properties</exclude>
                     	<exclude>com/gson/WeChatFilter.java</exclude>
+                    	<exclude>com/gson/test/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
