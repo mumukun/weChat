@@ -22,7 +22,7 @@ public class ConfKit {
 
 	static {
 		try {
-			props.load(new FileInputStream(new File("E:\\open code\\wechat\\src\\wechat.properties")));
+			props.load(new FileInputStream(new File("F:/git/wechat/src/wechat.properties")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
