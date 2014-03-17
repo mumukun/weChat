@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gson.inf.MessageProcessingHandler;
+import com.gson.inf.MsgTypes;
 
 public class InMessage {
 
@@ -221,30 +221,30 @@ public class InMessage {
 	}
 	
 	public Boolean isEvent(){
-		return this.MsgType.equals(MessageProcessingHandler.MSG_TYPE_EVENT);
+		return this.MsgType.equals(MsgTypes.EVENT.getType());
 	}
 	
 	public Boolean isText(){
-		return this.MsgType.equals(MessageProcessingHandler.MSG_TYPE_TEXT);
+		return this.MsgType.equals(MsgTypes.TEXT.getType());
 	}
 	
 	public Boolean isImage(){
-		return this.MsgType.equals(MessageProcessingHandler.MSG_TYPE_IMAGE);
+		return this.MsgType.equals(MsgTypes.IMAGE.getType());
 	}
 	
 	public Boolean isVoice(){
-		return this.MsgType.equals(MessageProcessingHandler.MSG_TYPE_VOICE);
+		return this.MsgType.equals(MsgTypes.VOICE.getType());
 	}
 	
 	public Boolean isVideo(){
-		return this.MsgType.equals(MessageProcessingHandler.MSG_TYPE_VIDEO);
+		return this.MsgType.equals(MsgTypes.VIDEO.getType());
 	}
 	
 	public Boolean isLocation(){
-		return this.MsgType.equals(MessageProcessingHandler.MSG_TYPE_LOCATION);
+		return this.MsgType.equals(MsgTypes.LOCATION.getType());
 	}
 	
 	public Boolean isLink(){
-		return this.MsgType.equals(MessageProcessingHandler.MSG_TYPE_LINK);
+		return this.MsgType.equals(MsgTypes.LINK.getType());
 	}
 }

@@ -26,6 +26,21 @@ public class Message {
     private static final String MESSAGE_URL = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=";
 
     /**
+     * 发送客服消息
+     * @param accessToken
+     * @param message
+     * @return
+     * @throws KeyManagementException
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException
+     * @throws IOException
+     */
+    private String sendMsg(String accessToken, Map<String, Object> message) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException{
+		String reslut = HttpKit.post(MESSAGE_URL.concat(accessToken), JSONObject.toJSONString(message));
+		return reslut;
+	}
+    
+    /**
      * 发送文本客服消息
      * @param openId
      * @param text
@@ -41,8 +56,7 @@ public class Message {
         json.put("touser", openId);
         json.put("msgtype", "text");
         json.put("text", textObj);
-        String post = JSONObject.toJSONString(json);
-    	String reslut = HttpKit.post(MESSAGE_URL.concat(accessToken), post);
+    	String reslut = sendMsg(accessToken, json);
         return reslut;
     }
 }

@@ -13,16 +13,6 @@ import com.gson.bean.OutMessage;
  *
  */
 public interface MessageProcessingHandler {
-	public final static String MSG_TYPE_TEXT = "text";
-	public final static String MSG_TYPE_LOCATION = "location";
-	public final static String MSG_TYPE_IMAGE = "image";
-	public final static String MSG_TYPE_LINK = "link";
-	public final static String MSG_TYPE_VOICE = "voice";
-	public final static String MSG_TYPE_EVENT = "event";
-	public final static String MSG_TYPE_VIDEO = "video";
-	
-	public final static String MSG_TYPE_NEWS = "news";
-	public final static String MSG_TYPE_MUSIC = "music";
 	
 	/**
 	 * 统一处理器
@@ -65,12 +55,14 @@ public interface MessageProcessingHandler {
 	 * @return
 	 */
 	public void linkTypeMsg(InMessage msg);
+
 	/**
 	 * 语音类型的消息处理
 	 * @param msg
 	 * @return
 	 */
 	public void voiceTypeMsg(InMessage msg);
+
 	/**
 	 * 事件类型的消息处理。<br/>
 	 * 在用户首次关注公众账号时，系统将会推送一条subscribe的事件

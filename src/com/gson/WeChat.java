@@ -15,6 +15,13 @@ import java.security.NoSuchProviderException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -229,4 +236,23 @@ public class WeChat {
         String jsonStr = HttpKit.upload(url,file);
         return JSON.parseObject(jsonStr, Map.class);
     }
+    
+    /**
+     * 判断是否来自微信, 5.0 之后的支持微信支付
+     * @param request
+     * @return
+     */
+ 	public static boolean isWeiXin(HttpServletRequest request) {
+ 		String userAgent = request.getHeader("User-Agent");
+ 		if (StringUtils.isNotBlank(userAgent)) {
+ 			Pattern p = Pattern.compile("MicroMessenger/(\\d+).+");
+ 			Matcher m = p.matcher(userAgent);
+ 			String version = null;
+ 			if(m.find()){
+ 				version = m.group(1);
+ 			}
+ 			return (null != version && NumberUtils.toInt(version) >= 5); 
+ 		}
+ 		return false;
+ 	}
 }

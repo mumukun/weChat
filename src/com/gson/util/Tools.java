@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 public final class Tools {
 
 	public static final String inputStream2String(InputStream in) throws UnsupportedEncodingException, IOException{
@@ -39,6 +41,6 @@ public final class Tools {
 			}
 		});
 		String temp = params.get(0)+params.get(1)+params.get(2);
-		return SHA1.encode(temp).equals(signature);
+		return DigestUtils.shaHex(temp).equals(signature);
 	}
 }

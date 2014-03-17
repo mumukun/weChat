@@ -12,7 +12,9 @@ import java.util.Properties;
 /**
  * 配置文件
  * @author L.cm
- * @date Jun 25, 2013 8:49:08 PM
+ * email: 596392912@qq.com
+ * site:  http://www.dreamlu.net
+ *
  */
 public class ConfKit {
 
@@ -20,7 +22,7 @@ public class ConfKit {
 
 	static {
 		try {
-			props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("wechat.properties"));
+			props.load(ConfKit.class.getResourceAsStream("/wechat.properties"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
