@@ -5,16 +5,15 @@
  */
 package com.gson.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
 /**
  * 配置文件
  * @author L.cm
- * @date Jun 25, 2013 8:49:08 PM
+ * email: 596392912@qq.com
+ * site:  http://www.dreamlu.net
+ *
  */
 public class ConfKit {
 
@@ -22,9 +21,7 @@ public class ConfKit {
 
 	static {
 		try {
-			props.load(new FileInputStream(new File("F:/git/wechat/src/wechat.properties")));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			props.load(ConfKit.class.getResourceAsStream("/wechat.properties"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
