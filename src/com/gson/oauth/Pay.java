@@ -32,7 +32,7 @@ public class Pay {
      * @return
      * @throws UnsupportedEncodingException 
      */
-    public static String getPackage(Map<String, String> params) {
+    public static String getPackage(Map<String, String> params) throws UnsupportedEncodingException {
         String partnerKey = ConfKit.get("partnerKey");
         String partnerId = ConfKit.get("partnerId");
         String notifyUrl = ConfKit.get("notify_url");
@@ -52,8 +52,7 @@ public class Pay {
      * @return
      * @throws UnsupportedEncodingException 
      */
-    @SuppressWarnings("deprecation")
-	public static String createSign(Map<String, String> params, boolean encode) {
+	public static String createSign(Map<String, String> params, boolean encode) throws UnsupportedEncodingException {
         Set<String> keysSet = params.keySet();
         Object[] keys = keysSet.toArray();
         Arrays.sort(keys);
@@ -72,7 +71,7 @@ public class Pay {
                 valueString = value.toString();
             }
             if (encode) {
-                temp.append(URLEncoder.encode(valueString)); //不要使用utf-8
+				temp.append(URLEncoder.encode(valueString, "UTF-8"));
             } else {
                 temp.append(valueString);
             }
@@ -87,7 +86,7 @@ public class Pay {
      * @return
      * @throws UnsupportedEncodingException 
      */
-    private static String packageSign(Map<String, String> params,String paternerKey) {
+    private static String packageSign(Map<String, String> params,String paternerKey) throws UnsupportedEncodingException {
         String string1 = createSign(params, false);
         String stringSignTemp = string1 + "&key=" + paternerKey;
         String signValue = DigestUtils.md5Hex(stringSignTemp).toUpperCase();
@@ -103,7 +102,7 @@ public class Pay {
      * @return
      * @throws UnsupportedEncodingException 
      */
-    public static String paySign(String timestamp, String noncestr,String packages) {
+    public static String paySign(String timestamp, String noncestr,String packages) throws UnsupportedEncodingException {
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("appid", ConfKit.get("AppId"));
         paras.put("timestamp", timestamp);

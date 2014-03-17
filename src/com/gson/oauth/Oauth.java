@@ -47,7 +47,7 @@ public class Oauth {
      * @return
      * @throws UnsupportedEncodingException 
      */
-    public String getCode() {
+    public String getCode() throws UnsupportedEncodingException {
         Map<String, String> params = new HashMap<String, String>();
         params.put("appid", getAppid());
         params.put("response_type", "code");
@@ -109,9 +109,4 @@ public class Oauth {
     public void setSecret(String secret) {
         this.secret = secret;
     }
-    
-    public static void main(String[] args) {
-    	Oauth oa = new Oauth();
-    	System.out.println(oa.getCode());
-	}
 }
