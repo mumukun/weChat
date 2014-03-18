@@ -7,74 +7,88 @@ package com.gson.plugin;
 
 /**
  * 插件实例
- * @author Administrator
  *
+ * @author Administrator
  */
 public class PluginInstance {
 
-	private PluginClassLoader loader;
-	private String fileName;
-	private String name;
-	private String version;
-	private String entryClass;
-	private String author;
-	private String description;
-	
-	public PluginInstance() {}
+    private PluginClassLoader loader;
+    private String fileName;
+    private String name;
+    private String version;
+    private Class<?> entry;
+    private String author;
+    private String description;
+    private String entryClass;
 
-	public PluginClassLoader getLoader() {
-		return loader;
-	}
+    public PluginInstance() {
+    }
 
-	public void setLoader(PluginClassLoader loader) {
-		this.loader = loader;
-	}
+    public PluginClassLoader getLoader() {
+        return loader;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setLoader(PluginClassLoader loader) {
+        this.loader = loader;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public String getEntryClass() {
-		return entryClass;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public void setEntryClass(String entryClass) {
-		this.entryClass = entryClass;
-	}
+    public Class<?> getEntry() {
+        return entry;
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public void setEntry(Class<?> entry) {
+        this.entry = entry;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-	
-	public String getFileName() {
-		return fileName;
-	}
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public Plugin getPluginInstance() throws Exception {
+        return (Plugin) entry.newInstance();
+    }
+
+    public void setEntryClass(String entryClass) {
+        this.entryClass = entryClass;
+    }
+
+    public String getEntryClass() {
+        return entryClass;
+    }
 }

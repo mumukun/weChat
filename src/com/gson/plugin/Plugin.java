@@ -12,4 +12,10 @@ package com.gson.plugin;
  */
 public interface Plugin {
 	public void run(Object... obj);
+
+    public Boolean install();
+
+    public Boolean uninstall();
+
+    public Boolean upgrade();
 }

@@ -1,9 +1,9 @@
 package com.gson.plugin;
 
 
-public class TestPlugin implements Plugin {
+public class TestPlugin extends AbstractPlugin {
 
-	@Override
+    @Override
 	public void run(Object... obj) {
 		System.out.println("plugin runing");
 	}
