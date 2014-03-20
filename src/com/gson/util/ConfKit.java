@@ -22,6 +22,8 @@ public class ConfKit {
 
 	static {
 		try {
+			//play框架下要用这种方式加载
+			//props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("/wechat.properties"));
 			props.load(ConfKit.class.getResourceAsStream("/wechat.properties"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
