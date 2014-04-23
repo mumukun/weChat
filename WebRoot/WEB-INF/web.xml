@@ -12,6 +12,30 @@
 		<filter-name>WeChatFilter</filter-name>
 		<url-pattern>/wechat/*</url-pattern>
 	</filter-mapping>
+	<servlet>
+		<servlet-name>WeChatPayServlet</servlet-name>
+		<servlet-class>com.gson.WeChatPayServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WeChatPayServlet</servlet-name>
+		<url-pattern>/wechat-pay/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>WeChatPayNotifyServlet</servlet-name>
+		<servlet-class>com.gson.WeChatPayNotifyServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WeChatPayNotifyServlet</servlet-name>
+		<url-pattern>/wechat-pay-notify/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+        <servlet-name>WeChatPay</servlet-name>
+        <servlet-class>com.gson.WeChatPayFeedbBackServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WeChatPay</servlet-name>
+        <url-pattern>/wechat-pay-feedbback/*</url-pattern>
+    </servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

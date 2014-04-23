@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>wechat</groupId>
     <artifactId>wechat</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>wechat</name>
     <description />
@@ -43,9 +43,9 @@
             <version>2.6</version>
         </dependency>
         <dependency>
-        	<groupId>commons-codec</groupId>
-        	<artifactId>commons-codec</artifactId>
-        	<version>1.2</version>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.2</version>
         </dependency>
     </dependencies>
     <build>
@@ -58,9 +58,10 @@
                     <source>1.6</source>
                     <target>1.6</target>
                     <excludes>
-                    	<exclude>*.properties</exclude>
-                    	<exclude>com/gson/WeChatFilter.java</exclude>
-                    	<exclude>com/gson/test/*</exclude>
+                        <exclude>*.properties</exclude>
+                        <exclude>com/gson/WeChatFilter.java</exclude>
+                        <exclude>com/gson/test/*</exclude>
+                        <exclude>com/gson/web/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
