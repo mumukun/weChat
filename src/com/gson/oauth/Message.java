@@ -5,11 +5,18 @@
  */
 package com.gson.oauth;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.alibaba.fastjson.JSONObject;
+import com.gson.bean.Article;
 import com.gson.bean.Articles;
 import com.gson.util.HttpKit;
 
@@ -23,7 +30,11 @@ import com.gson.util.HttpKit;
 public class Message {
 
     private static final String MESSAGE_URL = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=";
-
+    private static final String UPLOADNEWS_URL = "https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=";
+    private static final String MASS_SENDALL_URL = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=";
+    private static final String MASS_SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=";
+    private static final String MASS_DELETE_URL = "https://api.weixin.qq.com//cgi-bin/message/mass/delete?access_token=";
+    
     /**
      * 发送客服消息
      * @param accessToken
@@ -158,5 +169,98 @@ public class Message {
         json.put("voice", articles);
     	String reslut = sendMsg(accessToken, json);
         return reslut;
+    }
+    
+    /**
+     * 上传图文消息素材
+     * @param accessToken
+     * @param articles
+     * @return
+     * @throws KeyManagementException
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException
+     * @throws IOException
+     */
+    public JSONObject uploadnews(String accessToken,List<Article> articles) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException{
+    	Map<String,Object> json = new HashMap<String,Object>();
+    	json.put("articles", articles);
+    	String reslut = HttpKit.post(UPLOADNEWS_URL.concat(accessToken), JSONObject.toJSONString(json));
+    	if (StringUtils.isNotEmpty(reslut)) {
+			return JSONObject.parseObject(reslut);
+		}
+		return null;
+    }
+    
+    /**
+     * 根据分组进行群发
+     * @param accessToken
+     * @param groupId
+     * @param mpNewsMediaId
+     * @return
+     * @throws KeyManagementException
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException
+     * @throws IOException
+     */
+    public JSONObject massSendall(String accessToken,String groupId,String mpNewsMediaId) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException{
+    	Map<String,Object> json = new HashMap<String,Object>();
+    	Map<String,Object> filter = new HashMap<String,Object>();
+    	Map<String,Object> mpnews = new HashMap<String,Object>();
+    	filter.put("group_id", groupId);
+    	mpnews.put("media_id", mpNewsMediaId);
+    	
+    	json.put("mpnews", mpnews);
+    	json.put("filter", filter);
+    	json.put("msgtype", "mpnews");
+    	String reslut = HttpKit.post(MASS_SENDALL_URL.concat(accessToken), JSONObject.toJSONString(json));
+    	if (StringUtils.isNotEmpty(reslut)) {
+			return JSONObject.parseObject(reslut);
+		}
+		return null;
+    }
+    
+    /**
+     * 根据OpenID列表群发
+     * @param accessToken
+     * @param openids
+     * @param mpNewsMediaId
+     * @return
+     * @throws KeyManagementException
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException
+     * @throws IOException
+     */
+    public JSONObject massSend(String accessToken,String[] openids,String mpNewsMediaId) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException{
+    	Map<String,Object> json = new HashMap<String,Object>();
+    	Map<String,Object> mpnews = new HashMap<String,Object>();
+    	mpnews.put("media_id", mpNewsMediaId);
+    	json.put("touser", openids);
+    	json.put("mpnews", mpnews);
+    	json.put("msgtype", "mpnews");
+    	String reslut = HttpKit.post(MASS_SEND_URL.concat(accessToken), JSONObject.toJSONString(json));
+    	if (StringUtils.isNotEmpty(reslut)) {
+			return JSONObject.parseObject(reslut);
+		}
+		return null;
+    }
+    
+    /**
+     * 删除群发
+     * @param accessToken
+     * @param msgid
+     * @return
+     * @throws KeyManagementException
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException
+     * @throws IOException
+     */
+    public JSONObject massSend(String accessToken,String msgid) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException{
+    	Map<String,Object> json = new HashMap<String,Object>();
+    	json.put("msgid", msgid);
+    	String reslut = HttpKit.post(MASS_DELETE_URL.concat(accessToken), JSONObject.toJSONString(json));
+    	if (StringUtils.isNotEmpty(reslut)) {
+			return JSONObject.parseObject(reslut);
+		}
+		return null;
     }
 }

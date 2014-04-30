@@ -33,6 +33,7 @@ import com.gson.inf.MessageProcessingHandler;
 import com.gson.oauth.Group;
 import com.gson.oauth.Menu;
 import com.gson.oauth.Message;
+import com.gson.oauth.Qrcod;
 import com.gson.oauth.User;
 import com.gson.util.ConfKit;
 import com.gson.util.HttpKit;
@@ -70,6 +71,11 @@ public class WeChat {
      * 分组操作接口
      */
     public static final Group group = new Group();
+    
+    /**
+     * 分组操作接口
+     */
+    public static final Qrcod qrcod = new Qrcod();
 
     /**
      * 获取access_token
