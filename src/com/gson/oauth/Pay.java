@@ -25,7 +25,7 @@ import com.gson.util.ConfKit;
  */
 public class Pay {
 
-	/**
+    /**
      * 参与 paySign 签名的字段包括：appid、timestamp、noncestr、package 以及 appkey。
      * 这里 signType 并不参与签名微信的Package参数
      * @param params
@@ -52,7 +52,7 @@ public class Pay {
      * @return
      * @throws UnsupportedEncodingException 
      */
-	public static String createSign(Map<String, String> params, boolean encode) throws UnsupportedEncodingException {
+    public static String createSign(Map<String, String> params, boolean encode) throws UnsupportedEncodingException {
         Set<String> keysSet = params.keySet();
         Object[] keys = keysSet.toArray();
         Arrays.sort(keys);
@@ -71,7 +71,7 @@ public class Pay {
                 valueString = value.toString();
             }
             if (encode) {
-				temp.append(URLEncoder.encode(valueString, "UTF-8"));
+                temp.append(URLEncoder.encode(valueString, "UTF-8"));
             } else {
                 temp.append(valueString);
             }
@@ -113,5 +113,32 @@ public class Pay {
         String string1 = createSign(paras, false);
         String paySign = DigestUtils.shaHex(string1);
         return paySign;
+    }
+    
+    /**
+     * 支付回调校验签名
+     * @param productid
+     * @param timestamp
+     * @param noncestr
+     * @param openid
+     * @param issubscribe
+     * @param appsignature
+     * @return
+     * @throws UnsupportedEncodingException 
+     */
+    public static boolean verifySign(String productid, long timestamp,
+            String noncestr, String openid, int issubscribe, String appsignature) throws UnsupportedEncodingException {
+        Map<String, String> paras = new HashMap<String, String>();
+        paras.put("appid", ConfKit.get("AppId"));
+        paras.put("appkey", ConfKit.get("paySignKey"));
+        paras.put("productid", productid);
+        paras.put("timestamp", String.valueOf(timestamp));
+        paras.put("noncestr", noncestr);
+        paras.put("openid", openid);
+        paras.put("issubscribe", String.valueOf(issubscribe));
+        // appid、appkey、productid、timestamp、noncestr、openid、issubscribe
+        String string1 = createSign(paras, false);
+        String paySign = DigestUtils.shaHex(string1);
+        return paySign.equalsIgnoreCase(appsignature);
     }
 }
