@@ -157,13 +157,18 @@ public class WeChat {
             Object obj = getOutMessage.invoke(messageProcessingHandler);
             if(obj != null){
             	oms = (OutMessage) obj;
-            	setMsgInfo(oms, inMessage);
             }
             //调用事后处理
             try {
             	Method aftMt =  messageProcessingHandler.getClass().getMethod("afterProcess",InMessage.class,OutMessage.class);
             	aftMt.invoke(messageProcessingHandler, inMessage, oms);
 			} catch (Exception e) {}
+            
+            obj = getOutMessage.invoke(messageProcessingHandler);
+            if(obj != null){
+            	oms = (OutMessage) obj;
+            	setMsgInfo(oms, inMessage);
+            }
         } catch (Exception e) {
         	throw new RuntimeException(e);
         }
