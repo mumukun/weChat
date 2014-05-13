@@ -43,6 +43,9 @@ public class DefaultMessageProcessingHandlerImpl implements MessageProcessingHan
 	@Override
 	public void linkTypeMsg(InMessage msg) {
 	}
+	
+	@Override
+	public void verifyTypeMsg(InMessage msg) {}
 
 	@Override
 	public void eventTypeMsg(InMessage msg) {

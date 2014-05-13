@@ -62,6 +62,13 @@ public interface MessageProcessingHandler {
 	 * @return
 	 */
 	public void voiceTypeMsg(InMessage msg);
+	
+	/**
+	 * 验证消息处理
+	 * @param msg
+	 * @return
+	 */
+	public void verifyTypeMsg(InMessage msg);
 
 	/**
 	 * 事件类型的消息处理。<br/>

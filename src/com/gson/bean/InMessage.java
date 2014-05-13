@@ -49,6 +49,8 @@ public class InMessage {
 	private String FilterCount;
 	private String SentCount;
 	private String ErrorCount;
+	
+	private String SceneValue;
 
 	public String getToUserName() {
 		return ToUserName;
@@ -274,6 +276,14 @@ public class InMessage {
 	public void setErrorCount(String errorCount) {
 		ErrorCount = errorCount;
 	}
+	
+	public void setSceneValue(String sceneValue) {
+		SceneValue = sceneValue;
+	}
+	
+	public String getSceneValue() {
+		return SceneValue;
+	}
 
 	public Map<String,Object> toMap(){
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -321,5 +331,9 @@ public class InMessage {
 	
 	public Boolean isLink(){
 		return this.MsgType.equals(MsgTypes.LINK.getType());
+	}
+	
+	public Boolean isVerify(){
+		return this.MsgType.equals(MsgTypes.VERIFY.getType());
 	}
 }

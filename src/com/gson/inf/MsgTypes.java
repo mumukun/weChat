@@ -21,8 +21,8 @@ public enum MsgTypes {
 	EVENT("event"),
 	VIDEO("video"),
 	NEWS("news"),
-	MUSIC("music");
-	
+	MUSIC("music"),
+	VERIFY("verify");
 	private String type;
 	
 	MsgTypes(String type) {
