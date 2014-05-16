@@ -117,7 +117,6 @@ public class Pay {
     
     /**
      * 支付回调校验签名
-     * @param productid
      * @param timestamp
      * @param noncestr
      * @param openid
@@ -126,12 +125,11 @@ public class Pay {
      * @return
      * @throws UnsupportedEncodingException 
      */
-    public static boolean verifySign(String productid, long timestamp,
+    public static boolean verifySign(long timestamp,
             String noncestr, String openid, int issubscribe, String appsignature) throws UnsupportedEncodingException {
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("appid", ConfKit.get("AppId"));
         paras.put("appkey", ConfKit.get("paySignKey"));
-        paras.put("productid", productid);
         paras.put("timestamp", String.valueOf(timestamp));
         paras.put("noncestr", noncestr);
         paras.put("openid", openid);

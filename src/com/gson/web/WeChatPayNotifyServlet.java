@@ -54,8 +54,6 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 			postData = (WeChatBuyPost) xs.fromXML(xmlMsg);
 			
 			System.out.println(postData.toString());
-
-			String productid = postData.getProductId();
 			long timestamp   = postData.getTimeStamp();
 			String noncestr  = postData.getNonceStr();
 			String    openid = postData.getOpenId();
@@ -63,7 +61,7 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 			String appsignature = postData.getAppSignature();
 			// 校验支付合法
 			//appid、appkey、productid、timestamp、noncestr、openid、issubscribe
-			boolean temp = Pay.verifySign(productid, timestamp, noncestr, openid, issubscribe, appsignature);
+			boolean temp = Pay.verifySign(timestamp, noncestr, openid, issubscribe, appsignature);
 			if (!temp) {
 				writeString(resp, STATUC_FAIL);
 				return;
@@ -138,6 +136,8 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 		try {
 			String accessToken = WeChat.getAccessToken();
 			WeChat.message.sendText(accessToken, orderId, "您的订单号" + orderId + "已经支付成功！");
+			// TODO 发货通知！
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
