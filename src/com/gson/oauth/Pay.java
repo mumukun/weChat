@@ -5,16 +5,23 @@
  */
 package com.gson.oauth;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.gson.util.ConfKit;
+import com.gson.util.HttpKit;
 
 /**
  * 支付相关方法
@@ -24,6 +31,9 @@ import com.gson.util.ConfKit;
  *
  */
 public class Pay {
+
+    // 发货通知接口
+    private static final String DELIVERNOTIFY_URL = "https://api.weixin.qq.com/pay/delivernotify?access_token=";
 
     /**
      * 参与 paySign 签名的字段包括：appid、timestamp、noncestr、package 以及 appkey。
@@ -117,7 +127,6 @@ public class Pay {
     
     /**
      * 支付回调校验签名
-     * @param productid
      * @param timestamp
      * @param noncestr
      * @param openid
@@ -126,12 +135,11 @@ public class Pay {
      * @return
      * @throws UnsupportedEncodingException 
      */
-    public static boolean verifySign(String productid, long timestamp,
+    public static boolean verifySign(long timestamp,
             String noncestr, String openid, int issubscribe, String appsignature) throws UnsupportedEncodingException {
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("appid", ConfKit.get("AppId"));
         paras.put("appkey", ConfKit.get("paySignKey"));
-        paras.put("productid", productid);
         paras.put("timestamp", String.valueOf(timestamp));
         paras.put("noncestr", noncestr);
         paras.put("openid", openid);
@@ -140,5 +148,40 @@ public class Pay {
         String string1 = createSign(paras, false);
         String paySign = DigestUtils.shaHex(string1);
         return paySign.equalsIgnoreCase(appsignature);
+    }
+    
+    /**
+     * 发货通知
+     * @param access_token
+     * @param openid
+     * @param transid
+     * @param out_trade_no
+     * @param app_signature
+     * @return
+     * @throws IOException 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws KeyManagementException 
+     */
+    public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no, String app_signature) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+        Map<String, String> paras = new HashMap<String, String>();
+        paras.put("appid", ConfKit.get("AppId"));
+        paras.put("openid", openid);
+        paras.put("transid", transid);
+        paras.put("out_trade_no", out_trade_no);
+        paras.put("deliver_timestamp", (System.currentTimeMillis() / 1000) + "");
+        paras.put("deliver_status", "1");
+        paras.put("deliver_msg", "ok");
+        paras.put("app_signature", app_signature);
+        paras.put("sign_method", "sha1");
+        String json = HttpKit.post(DELIVERNOTIFY_URL.concat(access_token), JSONObject.toJSONString(paras));
+        if (StringUtils.isNotBlank(json)) {
+            JSONObject object = JSONObject.parseObject(json);
+            if (object.containsKey("errcode")) {
+                int errcode = object.getIntValue("errcode");
+                return errcode == 0;
+            }
+        }
+        return false;
     }
 }

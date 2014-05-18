@@ -44,7 +44,9 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// post 过来的xml
-		WeChatBuyPost postData = null;
+		WeChatBuyPostDto postData = null;
+		String           openid   = null;
+		String       appsignature = null;
 		try {
 			ServletInputStream in = req.getInputStream();
 			// 转换微信post过来的xml内容
@@ -53,23 +55,22 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 			String xmlMsg = Tools.inputStream2String(in);
 			postData = (WeChatBuyPost) xs.fromXML(xmlMsg);
 			
-			System.out.println(postData.toString());
-
-			String productid = postData.getProductId();
+			logger.info(postData.toString());
+			// OpenId=oOGf-jjDL7Kv-xT6MBD1qoyKtzeU, AppId=wx136bc734aff403df, IsSubscribe=1, TimeStamp=1392628878, NonceStr=54ah1fs5UsTZrf8s, AppSignature=02b5d8f2ccd8ca42cf13c6e44b48513c13294093, SignMethod=sha1
+			// 校验支付
 			long timestamp   = postData.getTimeStamp();
 			String noncestr  = postData.getNonceStr();
-			String    openid = postData.getOpenId();
+			openid = postData.getOpenId();
 			int issubscribe  = postData.getIsSubscribe();
-			String appsignature = postData.getAppSignature();
-			// 校验支付合法
-			//appid、appkey、productid、timestamp、noncestr、openid、issubscribe
-			boolean temp = Pay.verifySign(productid, timestamp, noncestr, openid, issubscribe, appsignature);
+			appsignature = postData.getAppSignature();
+			boolean temp = OauthWeChat.verifySign(timestamp, noncestr, openid, issubscribe, appsignature);
 			if (!temp) {
-				writeString(resp, STATUC_FAIL);
-				return;
+				logger.info("校验支付error！");
+				writeString(response, STATUC_FAIL);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			logger.error(e);
 		}
 		// 微信post过来的参数
 		@SuppressWarnings("unchecked")
@@ -138,6 +139,8 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 		try {
 			String accessToken = WeChat.getAccessToken();
 			WeChat.message.sendText(accessToken, orderId, "您的订单号" + orderId + "已经支付成功！");
+			//发货通知！推荐支付成功后就发送此通知...
+			Pay.delivernotify(accessToken, openid, transId, orderId, appsignature);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
