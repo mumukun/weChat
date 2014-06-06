@@ -93,6 +93,7 @@ public class HttpKit {
      */
     private static HttpsURLConnection initHttps (String url, String method, Map<String, String> headers) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException {
         TrustManager[] tm = { new MyX509TrustManager() };  
+        System.setProperty("https.protocols", "SSLv3");
         SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");  
         sslContext.init(null, tm, new java.security.SecureRandom());  
         // 从上述SSLContext对象中得到SSLSocketFactory对象  
