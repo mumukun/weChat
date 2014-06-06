@@ -19,7 +19,6 @@ public class WeChatBuyPost {
 	private int IsSubscribe;		// 用户是否关注了公众号。1 为关注，0 为未关注
 	private long TimeStamp;			// 时间戳
 	private String NonceStr;		// 随机字符串；字段来源：商户生成的随机字符
-	private String ProductId;		// 第三方的商品 ID 号
 	private String AppSignature;	// 字段名称：签名
 	private String SignMethod;		// SHA1
 
@@ -65,19 +64,12 @@ public class WeChatBuyPost {
 	public void setSignMethod(String signMethod) {
 		SignMethod = signMethod;
 	}
-	public String getProductId() {
-		return ProductId;
-	}
-	public void setProductId(String productId) {
-		ProductId = productId;
-	}
 
 	@Override
 	public String toString() {
 		return "WeChatBuyPost [OpenId=" + OpenId + ", AppId=" + AppId
 				+ ", IsSubscribe=" + IsSubscribe + ", TimeStamp=" + TimeStamp
-				+ ", NonceStr=" + NonceStr + ", ProductId=" + ProductId
-				+ ", AppSignature=" + AppSignature + ", SignMethod="
-				+ SignMethod + "]";
+				+ ", NonceStr=" + NonceStr + ", AppSignature=" + AppSignature
+				+ ", SignMethod=" + SignMethod + "]";
 	}
 }
