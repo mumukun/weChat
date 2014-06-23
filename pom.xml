@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>wechat</groupId>
     <artifactId>wechat</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <packaging>jar</packaging>
     <name>wechat</name>
     <description />
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.2</version>
+            <version>1.9</version>
         </dependency>
     </dependencies>
     <build>

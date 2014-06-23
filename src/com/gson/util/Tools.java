@@ -41,6 +41,6 @@ public final class Tools {
 			}
 		});
 		String temp = params.get(0)+params.get(1)+params.get(2);
-		return DigestUtils.shaHex(temp).equals(signature);
+		return DigestUtils.sha1Hex(temp).equals(signature);
 	}
 }
