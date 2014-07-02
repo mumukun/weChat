@@ -59,7 +59,6 @@
                     <target>1.6</target>
                     <excludes>
                         <exclude>*.properties</exclude>
-                        <exclude>com/gson/WeChatFilter.java</exclude>
                         <exclude>com/gson/test/*</exclude>
                         <exclude>com/gson/web/*</exclude>
                     </excludes>
