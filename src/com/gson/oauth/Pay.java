@@ -159,10 +159,10 @@ public class Pay {
      * @参数 appid、appkey、openid、transid、out_trade_no、deliver_timestamp、deliver_status、deliver_msg；
      */
     private static String deliverSign(Map<String, String> paras) throws UnsupportedEncodingException {
-    	paras.put("appkey", ConfKit.get("paySignKey"));
-    	String string1 = createSign(paras, false);
+        paras.put("appkey", ConfKit.get("paySignKey"));
+        String string1 = createSign(paras, false);
         String paySign = DigestUtils.sha1Hex(string1);
-    	return paySign;
+        return paySign;
     }
     
     
@@ -178,7 +178,8 @@ public class Pay {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-    public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+    public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no) 
+            throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("appid", ConfKit.get("AppId"));
         paras.put("openid", openid);
