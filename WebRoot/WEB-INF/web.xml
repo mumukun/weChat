@@ -14,7 +14,7 @@
 	</filter-mapping>
 	<servlet>
 		<servlet-name>WeChatPayServlet</servlet-name>
-		<servlet-class>com.gson.WeChatPayServlet</servlet-class>
+		<servlet-class>com.gson.web.WeChatPayServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>WeChatPayServlet</servlet-name>
@@ -22,7 +22,7 @@
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>WeChatPayNotifyServlet</servlet-name>
-		<servlet-class>com.gson.WeChatPayNotifyServlet</servlet-class>
+		<servlet-class>com.gson.web.WeChatPayNotifyServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>WeChatPayNotifyServlet</servlet-name>
@@ -30,7 +30,7 @@
 	</servlet-mapping>
 	<servlet>
         <servlet-name>WeChatPay</servlet-name>
-        <servlet-class>com.gson.WeChatPayFeedbBackServlet</servlet-class>
+        <servlet-class>com.gson.web.WeChatPayFeedbBackServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>WeChatPay</servlet-name>
