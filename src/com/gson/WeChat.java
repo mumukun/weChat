@@ -90,6 +90,17 @@ public class WeChat {
         Map<String, Object> map = JSONObject.parseObject(jsonStr);
         return map.get("access_token").toString();
     }
+    
+    /**
+     * 获取access_token
+     * @return
+     * @throws Exception
+     */
+    public static String getAccessToken(String appid,String secret) throws Exception {
+        String jsonStr = HttpKit.get(ACCESSTOKEN_URL.concat("&appid=") + appid + "&secret=" + secret);
+        Map<String, Object> map = JSONObject.parseObject(jsonStr);
+        return map.get("access_token").toString();
+    }
 
    /**
     * 支付反馈

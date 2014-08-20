@@ -44,7 +44,7 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// post 过来的xml
-		WeChatBuyPostDto postData = null;
+		WeChatBuyPost postData = null;
 		String           openid   = null;
 		String       appsignature = null;
 		try {
@@ -63,7 +63,7 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 			openid = postData.getOpenId();
 			int issubscribe  = postData.getIsSubscribe();
 			appsignature = postData.getAppSignature();
-			boolean temp = OauthWeChat.verifySign(timestamp, noncestr, openid, issubscribe, appsignature);
+			boolean temp = Pay.verifySign(timestamp, noncestr, openid, issubscribe, appsignature);
 			if (!temp) {
 				logger.info("校验支付error！");
 				writeString(response, STATUC_FAIL);

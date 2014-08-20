@@ -97,7 +97,7 @@ public class Pay {
      * @return
      * @throws UnsupportedEncodingException 
      */
-    private static String packageSign(Map<String, String> params,String paternerKey) throws UnsupportedEncodingException {
+    private static String packageSign(Map<String, String> params, String paternerKey) throws UnsupportedEncodingException {
         String string1 = createSign(params, false);
         String stringSignTemp = string1 + "&key=" + paternerKey;
         String signValue = DigestUtils.md5Hex(stringSignTemp).toUpperCase();
@@ -122,7 +122,7 @@ public class Pay {
         paras.put("appkey", ConfKit.get("paySignKey"));
         // appid、timestamp、noncestr、package 以及 appkey。
         String string1 = createSign(paras, false);
-        String paySign = DigestUtils.shaHex(string1);
+        String paySign = DigestUtils.sha1Hex(string1);
         return paySign;
     }
     
@@ -147,9 +147,25 @@ public class Pay {
         paras.put("issubscribe", String.valueOf(issubscribe));
         // appid、appkey、productid、timestamp、noncestr、openid、issubscribe
         String string1 = createSign(paras, false);
-        String paySign = DigestUtils.shaHex(string1);
+        String paySign = DigestUtils.sha1Hex(string1);
         return paySign.equalsIgnoreCase(appsignature);
     }
+    
+    /**
+     * 发货通知签名
+     * @param paras
+     * @return
+     * @throws UnsupportedEncodingException
+     * 
+     * @参数 appid、appkey、openid、transid、out_trade_no、deliver_timestamp、deliver_status、deliver_msg；
+     */
+    private static String deliverSign(Map<String, String> paras) throws UnsupportedEncodingException {
+        paras.put("appkey", ConfKit.get("paySignKey"));
+        String string1 = createSign(paras, false);
+        String paySign = DigestUtils.sha1Hex(string1);
+        return paySign;
+    }
+    
     
     /**
      * 发货通知
@@ -157,14 +173,19 @@ public class Pay {
      * @param openid
      * @param transid
      * @param out_trade_no
-     * @param app_signature
      * @return
      * @throws IOException 
      * @throws NoSuchProviderException 
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
+<<<<<<< .mine
     public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no, String app_signature) throws InterruptedException, ExecutionException, IOException {
+
+=======
+    public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no) 
+            throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+>>>>>>> .theirs
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("appid", ConfKit.get("AppId"));
         paras.put("openid", openid);
@@ -173,6 +194,8 @@ public class Pay {
         paras.put("deliver_timestamp", (System.currentTimeMillis() / 1000) + "");
         paras.put("deliver_status", "1");
         paras.put("deliver_msg", "ok");
+        // 签名
+        String app_signature = deliverSign(paras);
         paras.put("app_signature", app_signature);
         paras.put("sign_method", "sha1");
         String json = HttpKit.post(DELIVERNOTIFY_URL.concat(access_token), JSONObject.toJSONString(paras));
