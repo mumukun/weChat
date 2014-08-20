@@ -21,6 +21,7 @@ import java.util.concurrent.Future;
 import com.alibaba.fastjson.JSON;
 import com.gson.WeChat;
 import com.gson.bean.Attachment;
+import com.gson.bean.UserInfo;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 
@@ -31,7 +32,7 @@ import com.ning.http.client.Response;
  * @date 2013-10-9 下午2:40:19
  */ 
 public class HttpKit {
-
+	private static final String DEFAULT_CHARSET = "UTF-8";
     /**
      * @return 返回类型:
      * @throws IOException
@@ -44,10 +45,11 @@ public class HttpKit {
     public static String get(String url, Map<String, String> params, Map<String, String> headers) throws IOException, ExecutionException, InterruptedException {
         AsyncHttpClient http = new AsyncHttpClient();
         AsyncHttpClient.BoundRequestBuilder builder = http.prepareGet(url);
+        builder.setBodyEncoding(DEFAULT_CHARSET);
         if (params != null && !params.isEmpty()) {
             Set<String> keys = params.keySet();
             for (String key : keys) {
-                builder.addParameter(key, params.get(key));
+                builder.addQueryParameter(key, params.get(key));
             }
         }
 
@@ -58,7 +60,7 @@ public class HttpKit {
             }
         }
         Future<Response> f = builder.execute();
-        String body = f.get().getResponseBody();
+        String body = f.get().getResponseBody(DEFAULT_CHARSET);
         http.close();
         return body;
     }
@@ -100,6 +102,7 @@ public class HttpKit {
     public static String post(String url, Map<String, String> params) throws IOException, ExecutionException, InterruptedException {
         AsyncHttpClient http = new AsyncHttpClient();
         AsyncHttpClient.BoundRequestBuilder builder = http.preparePost(url);
+        builder.setBodyEncoding(DEFAULT_CHARSET);
         if (params != null && !params.isEmpty()) {
             Set<String> keys = params.keySet();
             for (String key : keys) {
@@ -107,7 +110,7 @@ public class HttpKit {
             }
         }
         Future<Response> f = builder.execute();
-        String body = f.get().getResponseBody();
+        String body = f.get().getResponseBody(DEFAULT_CHARSET);
         http.close();
         return body;
     }
@@ -126,6 +129,7 @@ public class HttpKit {
     public static String upload(String url, File file) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException, ExecutionException, InterruptedException {
         AsyncHttpClient http = new AsyncHttpClient();
         AsyncHttpClient.BoundRequestBuilder builder = http.preparePost(url);
+        builder.setBodyEncoding(DEFAULT_CHARSET);
         String BOUNDARY = "----WebKitFormBoundaryiDGnV9zdZA1eM1yL"; // 定义数据分隔线
         builder.setHeader("connection", "Keep-Alive");
         builder.setHeader("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36");
@@ -135,7 +139,7 @@ public class HttpKit {
         builder.setBody(new UploadEntityWriter(end_data, file));
 
         Future<Response> f = builder.execute();
-        String body = f.get().getResponseBody();
+        String body = f.get().getResponseBody(DEFAULT_CHARSET);
         http.close();
         return body;
     }
@@ -151,9 +155,10 @@ public class HttpKit {
         Attachment att = new Attachment();
         AsyncHttpClient http = new AsyncHttpClient();
         AsyncHttpClient.BoundRequestBuilder builder = http.prepareGet(url);
+        builder.setBodyEncoding(DEFAULT_CHARSET);
         Future<Response> f = builder.execute();
         if (f.get().getContentType().equalsIgnoreCase("text/plain")) {
-            att.setError(f.get().getResponseBody());
+            att.setError(f.get().getResponseBody(DEFAULT_CHARSET));
         } else {
             BufferedInputStream bis = new BufferedInputStream(f.get().getResponseBodyAsStream());
             String ds = f.get().getHeader("Content-disposition");
@@ -175,17 +180,20 @@ public class HttpKit {
     public static String post(String url, String s) throws IOException, ExecutionException, InterruptedException {
         AsyncHttpClient http = new AsyncHttpClient();
         AsyncHttpClient.BoundRequestBuilder builder = http.preparePost(url);
+        builder.setBodyEncoding(DEFAULT_CHARSET);
         builder.setBody(s);
         Future<Response> f = builder.execute();
-        String body = f.get().getResponseBody();
+        String body = f.get().getResponseBody(DEFAULT_CHARSET);
         http.close();
         return body;
     }
     
     public  static void main(String[] args) throws Exception{
-    	String accessToken = "DrRwTt9QRhw8LKoreE0_TuvVlugPiOWfxcMo8hoRE_9VedMl7MddmHbG2d81Cq2pQTYOUeFUqiwwV3SwKu58Yg";
+    	String accessToken = "ulhEL9F2CciJezmGj47C-d3hAJZwXiAANctVIwSHwBRK7Z1enIRWeZKZekk8jS5abIkCo2YmMSDlqUFKOKvSaw";
 		String openId = "oeZTVt6XlCphRnCI-DlpdTyk27p4";
-		System.out.println(WeChat.message.sendText(accessToken , openId , "test"));
+		UserInfo u = WeChat.user.getUserInfo(accessToken, openId);
+		System.out.println(JSON.toJSONString(u));
+		//System.out.println(WeChat.message.sendText(accessToken , openId , "测试"));
     	//Map<String, Object> mgs = WeChat.uploadMedia(accessToken, "image", new File("C:\\Users\\郭华\\Pictures\\13.jpg"));
     	//System.out.println(JSON.toJSONString(mgs));
     }
