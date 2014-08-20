@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -163,7 +164,7 @@ public class Pay {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-    public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no, String app_signature) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+    public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no, String app_signature) throws InterruptedException, ExecutionException, IOException {
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("appid", ConfKit.get("AppId"));
         paras.put("openid", openid);

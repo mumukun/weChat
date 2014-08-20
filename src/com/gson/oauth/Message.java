@@ -12,6 +12,7 @@ import java.security.NoSuchProviderException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -181,7 +182,7 @@ public class Message {
      * @throws NoSuchProviderException
      * @throws IOException
      */
-    public JSONObject uploadnews(String accessToken,List<Article> articles) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException{
+    public JSONObject uploadnews(String accessToken,List<Article> articles)throws IOException, ExecutionException, InterruptedException{
     	Map<String,Object> json = new HashMap<String,Object>();
     	json.put("articles", articles);
     	String reslut = HttpKit.post(UPLOADNEWS_URL.concat(accessToken), JSONObject.toJSONString(json));
@@ -202,7 +203,7 @@ public class Message {
      * @throws NoSuchProviderException
      * @throws IOException
      */
-    public JSONObject massSendall(String accessToken,String groupId,String mpNewsMediaId) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException{
+    public JSONObject massSendall(String accessToken,String groupId,String mpNewsMediaId)throws IOException, ExecutionException, InterruptedException{
     	Map<String,Object> json = new HashMap<String,Object>();
     	Map<String,Object> filter = new HashMap<String,Object>();
     	Map<String,Object> mpnews = new HashMap<String,Object>();
@@ -229,8 +230,9 @@ public class Message {
      * @throws NoSuchAlgorithmException
      * @throws NoSuchProviderException
      * @throws IOException
+     * @throws ExecutionException 
      */
-    public JSONObject massSend(String accessToken,String[] openids,String mpNewsMediaId) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException{
+    public JSONObject massSend(String accessToken,String[] openids,String mpNewsMediaId)throws IOException, InterruptedException, ExecutionException{
     	Map<String,Object> json = new HashMap<String,Object>();
     	Map<String,Object> mpnews = new HashMap<String,Object>();
     	mpnews.put("media_id", mpNewsMediaId);
@@ -254,7 +256,7 @@ public class Message {
      * @throws NoSuchProviderException
      * @throws IOException
      */
-    public JSONObject massSend(String accessToken,String msgid) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException{
+    public JSONObject massSend(String accessToken,String msgid)throws IOException, ExecutionException, InterruptedException{
     	Map<String,Object> json = new HashMap<String,Object>();
     	json.put("msgid", msgid);
     	String reslut = HttpKit.post(MASS_DELETE_URL.concat(accessToken), JSONObject.toJSONString(json));

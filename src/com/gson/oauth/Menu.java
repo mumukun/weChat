@@ -6,10 +6,12 @@
 package com.gson.oauth;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import com.alibaba.fastjson.JSON;
 import com.gson.util.HttpKit;
@@ -30,7 +32,7 @@ public class Menu {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-	public boolean createMenu(String accessToken,String params) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+	public boolean createMenu(String accessToken,String params) throws InterruptedException, ExecutionException, IOException {
         String jsonStr = HttpKit.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken, params);
         Map<String, Object> map = JSON.parseObject(jsonStr,Map.class);
         return "0".equals(map.get("errcode").toString());
@@ -43,7 +45,7 @@ public class Menu {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-    public Map<String, Object> getMenuInfo(String accessToken) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+    public Map<String, Object> getMenuInfo(String accessToken) throws InterruptedException, ExecutionException, NoSuchAlgorithmException, KeyManagementException, IOException, NoSuchProviderException {
         String jsonStr = HttpKit.get("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=" + accessToken);
         Map<String, Object> map = JSON.parseObject(jsonStr, Map.class);
         return map;
@@ -56,7 +58,7 @@ public class Menu {
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
      */
-    public boolean deleteMenu(String accessToken) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+    public boolean deleteMenu(String accessToken) throws InterruptedException, ExecutionException, NoSuchAlgorithmException, KeyManagementException, IOException, NoSuchProviderException {
         String jsonStr = HttpKit.get("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=" + accessToken);
         Map<String, Object> map = JSON.parseObject(jsonStr, Map.class);
         return "0".equals(map.get("errcode").toString());

@@ -15,6 +15,7 @@ import java.security.NoSuchProviderException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -225,8 +226,10 @@ public class WeChat {
      * @param mediaId
      * @return
      * @throws IOException
+     * @throws InterruptedException 
+     * @throws ExecutionException 
      */
-    public static Attachment getMedia(String accessToken,String mediaId) throws IOException{
+    public static Attachment getMedia(String accessToken,String mediaId) throws IOException, ExecutionException, InterruptedException{
     	String url = GET_MEDIA_URL + accessToken + "&media_id=" + mediaId;
         return HttpKit.download(url);
     }
@@ -240,9 +243,11 @@ public class WeChat {
      * @throws NoSuchAlgorithmException
      * @throws NoSuchProviderException
      * @throws IOException
+     * @throws InterruptedException 
+     * @throws ExecutionException 
      */
     @SuppressWarnings("unchecked")
-	public static Map<String, Object> uploadMedia(String accessToken,String type,File file) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+	public static Map<String, Object> uploadMedia(String accessToken,String type,File file) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException, ExecutionException, InterruptedException {
         String url = UPLOAD_MEDIA_URL + accessToken +"&type="+type;
         String jsonStr = HttpKit.upload(url,file);
         return JSON.parseObject(jsonStr, Map.class);
