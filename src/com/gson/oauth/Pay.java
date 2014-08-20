@@ -178,14 +178,11 @@ public class Pay {
      * @throws NoSuchProviderException 
      * @throws NoSuchAlgorithmException 
      * @throws KeyManagementException 
+     * @throws InterruptedException 
+     * @throws ExecutionException 
      */
-<<<<<<< .mine
-    public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no, String app_signature) throws InterruptedException, ExecutionException, IOException {
 
-=======
-    public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no) 
-            throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
->>>>>>> .theirs
+    public static boolean delivernotify(String access_token, String openid, String transid, String out_trade_no) throws IOException, ExecutionException, InterruptedException {
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("appid", ConfKit.get("AppId"));
         paras.put("openid", openid);
