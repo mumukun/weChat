@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.gson.bean.Article;
 import com.gson.bean.Articles;
+import com.gson.bean.TemplateData;
 import com.gson.util.HttpKit;
 
 /**
@@ -35,7 +36,7 @@ public class Message {
     private static final String MASS_SENDALL_URL = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=";
     private static final String MASS_SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=";
     private static final String MASS_DELETE_URL = "https://api.weixin.qq.com//cgi-bin/message/mass/delete?access_token=";
-    
+    private static final String TEMPLATE_SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=";
     /**
      * 发送客服消息
      * @param accessToken
@@ -260,6 +261,23 @@ public class Message {
     	Map<String,Object> json = new HashMap<String,Object>();
     	json.put("msgid", msgid);
     	String reslut = HttpKit.post(MASS_DELETE_URL.concat(accessToken), JSONObject.toJSONString(json));
+    	if (StringUtils.isNotEmpty(reslut)) {
+			return JSONObject.parseObject(reslut);
+		}
+		return null;
+    }
+    
+    /**
+     * 发送模板消息
+     * @param accessToken
+     * @param data
+     * @return
+     * @throws IOException
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public JSONObject templateSend(String accessToken,TemplateData data) throws IOException, ExecutionException, InterruptedException{
+    	String reslut = HttpKit.post(TEMPLATE_SEND_URL.concat(accessToken), JSONObject.toJSONString(data));
     	if (StringUtils.isNotEmpty(reslut)) {
 			return JSONObject.parseObject(reslut);
 		}
