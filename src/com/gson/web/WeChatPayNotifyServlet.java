@@ -55,7 +55,7 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 			String xmlMsg = Tools.inputStream2String(in);
 			postData = (WeChatBuyPost) xs.fromXML(xmlMsg);
 			
-			logger.info(postData.toString());
+			System.out.println(postData.toString());
 			// OpenId=oOGf-jjDL7Kv-xT6MBD1qoyKtzeU, AppId=wx136bc734aff403df, IsSubscribe=1, TimeStamp=1392628878, NonceStr=54ah1fs5UsTZrf8s, AppSignature=02b5d8f2ccd8ca42cf13c6e44b48513c13294093, SignMethod=sha1
 			// 校验支付
 			long timestamp   = postData.getTimeStamp();
@@ -65,12 +65,11 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 			appsignature = postData.getAppSignature();
 			boolean temp = Pay.verifySign(timestamp, noncestr, openid, issubscribe, appsignature);
 			if (!temp) {
-				logger.info("校验支付error！");
-				writeString(response, STATUC_FAIL);
+				System.out.println("校验支付error！");
+				writeString(resp, STATUC_FAIL);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			logger.error(e);
 		}
 		// 微信post过来的参数
 		@SuppressWarnings("unchecked")
@@ -140,7 +139,7 @@ public class WeChatPayNotifyServlet extends HttpServlet {
 			String accessToken = WeChat.getAccessToken();
 			WeChat.message.sendText(accessToken, orderId, "您的订单号" + orderId + "已经支付成功！");
 			//发货通知！推荐支付成功后就发送此通知...
-			Pay.delivernotify(accessToken, openid, transId, orderId, appsignature);
+			Pay.delivernotify(accessToken, openid, transId, transId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
