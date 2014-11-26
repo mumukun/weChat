@@ -6,10 +6,9 @@
 package com.gson.bean;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
- *	模板消息数据对象
+ * 模板消息数据对象
  *
  * @author L.cm
  * @date 2014-11-10 下午3:32:30
@@ -17,82 +16,86 @@ import java.util.List;
  */
 public class TemplateData {
 
-	private String touser;
-	private String template_id;
-	private String url;
-	private String topcolor;
-	private List<TemplateItem> data;
-	
-	
-	public String getTouser() {
-		return touser;
-	}
+    private String touser;
+    private String template_id;
+    private String url;
+    private String topcolor;
+    private TemplateDataItem data;
 
-	public void setTouser(String touser) {
-		this.touser = touser;
-	}
 
-	public String getTemplate_id() {
-		return template_id;
-	}
+    public String getTouser() {
+        return touser;
+    }
 
-	public void setTemplate_id(String template_id) {
-		this.template_id = template_id;
-	}
+    public void setTouser(String touser) {
+        this.touser = touser;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getTemplate_id() {
+        return template_id;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setTemplate_id(String template_id) {
+        this.template_id = template_id;
+    }
 
-	public String getTopcolor() {
-		return topcolor;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public void setTopcolor(String topcolor) {
-		this.topcolor = topcolor;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public List<TemplateItem> getData() {
-		return data;
-	}
+    public String getTopcolor() {
+        return topcolor;
+    }
 
-	public void setData(List<TemplateItem> data) {
-		this.data = data;
-	}
+    public void setTopcolor(String topcolor) {
+        this.topcolor = topcolor;
+    }
 
-	class TemplateItem extends HashMap<String, Item> {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+    public TemplateDataItem getData() {
+        return data;
+    }
 
-		public TemplateItem(String key, Item item) {
-			this.put(key, item);
-		}
-	}
+    public void setData(TemplateDataItem data) {
+        this.data = data;
+    }
 
-	class Item {
-		private String value;
-		private String color;
+    public TemplateDataItem getTemplateDataItemInstance() {
+        return new TemplateDataItem();
+    }
 
-		public void setColor(String color) {
-			this.color = color;
-		}
+    public class TemplateDataItem extends HashMap<String, Item> {
+        private static final long serialVersionUID = 1L;
 
-		public void setValue(String value) {
-			this.value = value;
-		}
+        public Item getItemInstance() {
+            return new Item();
+        }
 
-		public String getValue() {
-			return value;
-		}
+        public TemplateDataItem() {
+        }
+    }
 
-		public String getColor() {
-			return color;
-		}
-	}
+    public class Item {
+        private String value;
+        private String color;
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getColor() {
+            return color;
+        }
+    }
 }
