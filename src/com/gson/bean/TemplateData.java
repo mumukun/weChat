@@ -10,7 +10,7 @@ import java.util.HashMap;
 /**
  * 模板消息数据对象
  *
- * @author L.cm
+ * @author ____′↘夏悸
  * @date 2014-11-10 下午3:32:30
  * @description 模板消息数据对象
  */
@@ -20,8 +20,25 @@ public class TemplateData {
     private String template_id;
     private String url;
     private String topcolor;
-    private TemplateDataItem data;
+    private TemplateDataItem data = new TemplateDataItem();
 
+    private TemplateData(String touser, String template_id, String url, String topcolor) {
+        this.touser = touser;
+        this.template_id = template_id;
+        this.url = url;
+        this.topcolor = topcolor;
+    }
+
+    public TemplateData(String touser, String template_id) {
+        this.touser = touser;
+        this.template_id = template_id;
+    }
+
+    public TemplateData(String touser, String template_id, String url) {
+        this.touser = touser;
+        this.template_id = template_id;
+        this.url = url;
+    }
 
     public String getTouser() {
         return touser;
@@ -70,17 +87,40 @@ public class TemplateData {
     public class TemplateDataItem extends HashMap<String, Item> {
         private static final long serialVersionUID = 1L;
 
-        public Item getItemInstance() {
-            return new Item();
+        public Item getItemInstance(String value) {
+            return new Item(value);
+        }
+
+        public Item getItemInstance(String value, String color) {
+            return new Item(value, color);
         }
 
         public TemplateDataItem() {
+        }
+
+        public TemplateDataItem addItem(String key, String value) {
+            this.put(key, new Item(value));
+            return this;
+        }
+
+        public TemplateDataItem addItem(String key, String value, String color) {
+            this.put(key, new Item(value, color));
+            return this;
         }
     }
 
     public class Item {
         private String value;
-        private String color;
+        private String color = "#000000";
+
+        public Item(String value) {
+            this.value = value;
+        }
+
+        public Item(String value, String color) {
+            this.value = value;
+            this.color = color;
+        }
 
         public void setColor(String color) {
             this.color = color;
