@@ -81,7 +81,17 @@ public class TemplateData {
     }
 
     public TemplateDataItem getTemplateDataItemInstance() {
-        return new TemplateDataItem();
+        return getData();
+    }
+
+    public TemplateData push(String key, String value, String color) {
+        this.data.addItem(key, value, color);
+        return this;
+    }
+
+    public TemplateData push(String key, String value) {
+        this.data.addItem(key, value);
+        return this;
     }
 
     public class TemplateDataItem extends HashMap<String, Item> {
