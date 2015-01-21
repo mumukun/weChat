@@ -80,6 +80,7 @@ public class TemplateData {
         this.data = data;
     }
 
+    @Deprecated
     public TemplateDataItem getTemplateDataItemInstance() {
         return getData();
     }

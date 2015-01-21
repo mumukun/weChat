@@ -16,6 +16,7 @@ public class Article implements Serializable{
 	private String content_source_url;
 	private String content;
 	private String digest;
+	private String show_cover_pic = "1";
 	
 	public String getThumb_media_id() {
 		return thumb_media_id;
@@ -55,5 +56,13 @@ public class Article implements Serializable{
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getShow_cover_pic() {
+		return show_cover_pic;
+	}
+
+	public void setShow_cover_pic(String show_cover_pic) {
+		this.show_cover_pic = show_cover_pic;
 	}
 }

@@ -5,11 +5,11 @@
  */
 package com.gson.bean;
 
+import com.gson.inf.MsgTypes;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.gson.inf.MsgTypes;
 
 public class InMessage {
 
@@ -35,6 +35,8 @@ public class InMessage {
 	private String MediaId;
 	private String Format;
 	private String Recognition;
+	//视频消息
+	private String ThumbMediaId;
 	// 事件
 	private String Event;
 	private String EventKey;
@@ -283,6 +285,14 @@ public class InMessage {
 	
 	public String getSceneValue() {
 		return SceneValue;
+	}
+
+	public String getThumbMediaId() {
+		return ThumbMediaId;
+	}
+
+	public void setThumbMediaId(String thumbMediaId) {
+		ThumbMediaId = thumbMediaId;
 	}
 
 	public Map<String,Object> toMap(){
